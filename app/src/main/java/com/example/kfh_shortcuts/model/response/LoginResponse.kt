@@ -1,8 +1,8 @@
 package com.example.kfh_shortcuts.model.response
 
 class LoginResponse (
-    var FirstName: String,
-    var LastName: String,
-    var KFHID: Int,
+    var firstName: String,
+    var lastName: String,
+    var kfH_Id: Int,
     val token: String?
 )

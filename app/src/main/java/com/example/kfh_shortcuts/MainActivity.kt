@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -11,9 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.kfh_shortcuts.composable.LoginScreen
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.kfh_shortcuts.composable.AppScreen
 import com.example.kfh_shortcuts.composable.CatalogScreen
+import com.example.kfh_shortcuts.composable.MyNavHost
 
 import com.example.kfh_shortcuts.ui.theme.KFHShortcutsTheme
+import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +26,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             KFHShortcutsTheme {
                 // A surface container using the 'background' color from the theme
-               CatalogScreen()
+
+                MyNavHost()
+
 
             }
         }
