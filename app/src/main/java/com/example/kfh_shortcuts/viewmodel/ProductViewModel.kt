@@ -21,6 +21,8 @@ class ProductViewModel : ViewModel()  {
         viewModelScope.launch {
             try {
                 val response = apiService.login(Login(username, password))
+                println(response.message())
+                println(response.code())
                 token = response.body()
                 println("login ${token?.firstName}")
             } catch (e: Exception) {
