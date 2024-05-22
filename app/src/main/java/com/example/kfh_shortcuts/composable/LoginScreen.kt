@@ -24,6 +24,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 
 import androidx.compose.ui.graphics.Brush
 
@@ -42,7 +43,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 
@@ -54,97 +58,103 @@ import com.example.kfh_shortcuts.R
 
 fun LoginScreen() {
 
-    Column(
-
+    Surface(
         modifier = Modifier.fillMaxSize(),
-
-        horizontalAlignment = Alignment.CenterHorizontally
-
+        color = MaterialTheme.colorScheme.background
     ) {
-
-        Box(
-
-            modifier = Modifier
-
-                .fillMaxWidth()
-
-                .height(358.dp)
-
-                .graphicsLayer {
-
-                    clip = true
-
-                    shape = RoundedCornerShape(bottomStart = 29.dp, bottomEnd = 29.dp)
-
-                }
-
-                .background(
-
-                    brush = Brush.linearGradient(
-
-                        colors = listOf(Color(0xFF007A3D), Color(0xFF0D4228), Color(0xFF000000)),
-
-                        start = Offset.Zero,
-
-                        end = Offset.Infinite
-
-                    )
-
-                ),
-
-            contentAlignment = Alignment.Center
-
-        ) {
-
-            Column(
-
-                horizontalAlignment = Alignment.CenterHorizontally,
-
-                verticalArrangement = Arrangement.Center
-
-            ) {
-
-                Logo()
-
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Title()
-
-            }
-
-        }
-
-        Spacer(modifier = Modifier.height(32.dp))
-
         Column(
 
-            modifier = Modifier
-
-                .padding(16.dp)
-
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
 
             horizontalAlignment = Alignment.CenterHorizontally
 
         ) {
 
-            SignInPrompt()
+            Box(
+
+                modifier = Modifier
+
+                    .fillMaxWidth()
+
+                    .height(358.dp)
+
+                    .graphicsLayer {
+
+                        clip = true
+
+                        shape = RoundedCornerShape(bottomStart = 29.dp, bottomEnd = 29.dp)
+
+                    }
+
+                    .background(
+
+                        brush = Brush.linearGradient(
+
+                            colors = listOf(Color(0xFF007A3D), Color(0xFF0D4228), Color(0xFF000000)),
+
+                            start = Offset.Zero,
+
+                            end = Offset.Infinite
+
+                        )
+
+                    ),
+
+                contentAlignment = Alignment.Center
+
+            ) {
+
+                Column(
+
+                    horizontalAlignment = Alignment.CenterHorizontally,
+
+                    verticalArrangement = Arrangement.Center
+
+                ) {
+
+                    Logo()
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    Title()
+
+                }
+
+            }
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            EmailField()
+            Column(
 
-            Spacer(modifier = Modifier.height(16.dp))
+                modifier = Modifier
 
-            PasswordField()
+                    .padding(16.dp)
 
-            Spacer(modifier = Modifier.height(32.dp))
+                    .fillMaxWidth(),
 
-            LoginButton()
+                horizontalAlignment = Alignment.CenterHorizontally
+
+            ) {
+
+                SignInPrompt()
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                EmailField()
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                PasswordField()
+
+                Spacer(modifier = Modifier.height(32.dp))
+
+                LoginButton()
+
+            }
 
         }
-
     }
+
 
 }
 
@@ -193,7 +203,7 @@ fun Title() {
         text = "Shortcuts\n",
         modifier = Modifier
             .width(218.dp)
-            .height(35.dp),
+            .height(40.dp),
 
         style = TextStyle(
             fontSize = 34.sp,
@@ -211,9 +221,22 @@ fun Title() {
 @Composable
 
 fun SignInPrompt() {
+    Text(
+        text = "Let’s sign you in.",
 
-    Text("Let's sign you in.", style = MaterialTheme.typography.headlineMedium, color = Color.Black)
+        style = TextStyle(
+            fontSize = 30.sp,
+            lineHeight = 38.sp,
+            fontWeight = FontWeight(700),
+            color = Color(0xFF000000),
 
+        ),
+       modifier =  Modifier
+           .fillMaxWidth()
+           .padding(start=16.dp)
+
+
+    )
 }
 
 
@@ -225,7 +248,6 @@ fun SignInPrompt() {
 fun EmailField() {
 
     var email by remember { mutableStateOf("") }
-
 
 
     OutlinedTextField(
@@ -276,8 +298,6 @@ fun PasswordField() {
 
     var passwordVisible by remember { mutableStateOf(false) }
 
-
-
     OutlinedTextField(
 
         value = password,
@@ -305,8 +325,6 @@ fun PasswordField() {
                 painterResource(id = R.drawable.ic_visible)
 
             else painterResource(id = R.drawable.ic_visible)
-
-
 
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
 
@@ -344,21 +362,17 @@ fun LoginButton() {
 
     Button(
 
-        onClick = { /* Handle login */ },
+        onClick = {  },
 
-        modifier = Modifier
-
-            .fillMaxWidth()
-
-            .height(50.dp)
-
-            .background(Color(0xFF007A3D)),
-
-        shape = RoundedCornerShape(8.dp),
+        Modifier
+            .width(344.dp)
+            .height(63.dp)
+            .background(color = Color(0xFF007A3D), shape = RoundedCornerShape(size = 8.dp))
+            .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
 
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF007A3D))
-
-    ) {
+    )
+    {
 
         Text("Login", fontSize = 16.sp, color = Color.White)
 
