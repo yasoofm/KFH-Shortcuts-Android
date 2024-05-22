@@ -1,6 +1,8 @@
 package com.example.kfh_shortcuts.composable
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,10 +20,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.ui.geometry.Offset
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AppScreen() {
     Scaffold(
@@ -31,27 +33,30 @@ fun AppScreen() {
                 shape = CircleShape,
                 containerColor = Color(0xFF007A3D),
                 contentColor = Color.White,
-                modifier = Modifier
-                    .padding(bottom = 16.dp, end = 0.dp)
+                modifier = Modifier.padding(bottom = 16.dp, end = 16.dp)
             ) {
-                Icon(Icons.Default.Face, contentDescription = "Face")
+                Icon(Icons.Default.Face, contentDescription = "chat")
             }
         },
-        floatingActionButtonPosition = FabPosition.Center,
+        floatingActionButtonPosition = FabPosition.End,
         bottomBar = {
             BottomAppBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(80.dp)
             ) {
-                BottomNavBar()
+                BottomNavBar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(80.dp)
+                )
             }
         },
         topBar = {
             TopBar()
         }
     ) {
-        Spacer(modifier = Modifier.padding(it))
+
     }
 }
 
@@ -76,7 +81,7 @@ fun TopBar() {
 }
 
 @Composable
-fun BottomNavBar() {
+fun BottomNavBar(modifier: Modifier) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -102,7 +107,9 @@ fun BottomNavBar() {
 @Composable
 fun NavItem(icon: ImageVector, label: String) {
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .clickable { /* TODO: Add action */ }
     ) {
         Icon(
             imageVector = icon,
@@ -110,7 +117,7 @@ fun NavItem(icon: ImageVector, label: String) {
             tint = Color.White,
             modifier = Modifier.size(24.dp)
         )
-        Spacer(modifier = Modifier.height(30.dp))
+        Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = label,
             color = Color.White,
@@ -118,10 +125,66 @@ fun NavItem(icon: ImageVector, label: String) {
         )
     }
 }
+
+
+
+@Composable
+fun HomeScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "Home Screen")
+    }
+}
+
+@Composable
+fun HistoryScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "History Screen")
+    }
+}
+
+@Composable
+fun RewardsScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "Rewards Screen")
+    }
+}
+
+@Composable
+fun ChatBotScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(text = "chat Screen")
+    }
+}
+
+
+
+
+//onlie design first one
 //package com.example.kfh_shortcuts.composable
 //
 //import androidx.compose.foundation.background
 //import androidx.compose.foundation.layout.*
+//import androidx.compose.foundation.shape.CircleShape
 //import androidx.compose.foundation.shape.RoundedCornerShape
 //import androidx.compose.material3.*
 //import androidx.compose.runtime.Composable
@@ -137,14 +200,36 @@ fun NavItem(icon: ImageVector, label: String) {
 //import androidx.compose.material.icons.filled.Home
 //import androidx.compose.material.icons.filled.List
 //import androidx.compose.material.icons.filled.Star
+//import androidx.compose.material.icons.filled.Face
 //import androidx.compose.ui.geometry.Offset
 //
 //@Composable
 //fun AppScreen() {
 //    Scaffold(
+//        floatingActionButton = {
+//            FloatingActionButton(
+//                onClick = { /* TODO: Add action */ },
+//                shape = CircleShape,
+//                containerColor = Color(0xFF007A3D),
+//                contentColor = Color.White,
+//                modifier = Modifier
+//                    .padding(bottom = 16.dp, end = 16.dp)
+//            ) {
+//                Icon(Icons.Default.Face, contentDescription = "Face")
+//            }
+//        },
+//        floatingActionButtonPosition = FabPosition.End,
 //        bottomBar = {
-//            BottomAppBar {
-//                BottomNavBar()
+//            BottomAppBar(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(95.dp)
+//            ) {
+//                BottomNavBar(
+//                    modifier = Modifier
+//                        .fillMaxWidth()
+//                        .height(80.dp)
+//                )
 //            }
 //        },
 //        topBar = {
@@ -153,7 +238,6 @@ fun NavItem(icon: ImageVector, label: String) {
 //    ) {
 //        Spacer(modifier = Modifier.padding(it))
 //    }
-//
 //}
 //
 //@Composable
@@ -177,7 +261,7 @@ fun NavItem(icon: ImageVector, label: String) {
 //}
 //
 //@Composable
-//fun BottomNavBar() {
+//fun BottomNavBar(modifier: Modifier) {
 //    Row(
 //        modifier = Modifier
 //            .fillMaxWidth()
@@ -190,7 +274,7 @@ fun NavItem(icon: ImageVector, label: String) {
 //                    )
 //                )
 //            )
-//            .padding(vertical = 16.dp),
+//            .padding(vertical = 10.dp),
 //        horizontalArrangement = Arrangement.SpaceEvenly,
 //        verticalAlignment = Alignment.CenterVertically
 //    ) {
@@ -209,15 +293,12 @@ fun NavItem(icon: ImageVector, label: String) {
 //            imageVector = icon,
 //            contentDescription = label,
 //            tint = Color.White,
-//            modifier = Modifier.size(24.dp)
+//            modifier = Modifier.size(30.dp)
 //        )
-//        Spacer(modifier = Modifier.height(4.dp))
 //        Text(
 //            text = label,
 //            color = Color.White,
-//            fontSize = 12.sp
+//            fontSize = 18.sp
 //        )
 //    }
-//
 //}
-
