@@ -10,6 +10,7 @@ import com.example.kfh_shortcuts.network.ProductAPIService
 import com.example.kfh_shortcuts.network.RetrofitHelper
 import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModel
+import com.example.kfh_shortcuts.model.response.LoginResponse
 
 
 class ProductViewModel : ViewModel()  {
@@ -21,7 +22,7 @@ class ProductViewModel : ViewModel()  {
             try {
                 val response = apiService.login(Login(username, password))
                 token = response.body()
-                println("login ${token?.token}")
+                println("login ${token?.firstName}")
             } catch (e: Exception) {
                 println("Error $e")
             }

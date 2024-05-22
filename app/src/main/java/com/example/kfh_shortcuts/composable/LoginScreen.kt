@@ -61,8 +61,8 @@ import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 
 
 fun LoginScreen(viewModel: ProductViewModel,onSignInClicked: () -> Unit) {
-    var user by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+    var user = remember { mutableStateOf("") }
+    var password = remember { mutableStateOf("") }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -146,20 +146,25 @@ fun LoginScreen(viewModel: ProductViewModel,onSignInClicked: () -> Unit) {
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                EmailField()
+                EmailField(user)
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                PasswordField()
+                PasswordField(password)
 
                 Spacer(modifier = Modifier.height(32.dp))
 
                 Button(
 
-                    onClick = {   viewModel.login(
-                        user,
-                        password
-                    ) },
+                    onClick = {
+                        println("user ${user.value}")
+                        println("pass ${password.value}")
+                        viewModel.login(
+                        user.value,
+                        password.value
+                    )
+                        println(viewModel.token?.token)
+                              },
 
                     Modifier
                         .width(344.dp)
@@ -270,16 +275,16 @@ fun SignInPrompt() {
 
 @Composable
 
-fun EmailField() {
+fun EmailField(user: MutableState<String>) {
 
     var email by remember { mutableStateOf("") }
 
 
     OutlinedTextField(
 
-        value = email,
+        value = user.value,
 
-        onValueChange = { email = it },
+        onValueChange = { user.value = it },
 
         label = { Text("Email") },
 
@@ -316,9 +321,10 @@ fun EmailField() {
 
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 
-fun PasswordField() {
+fun PasswordField(pass: MutableState<String>) {
 
     var password by remember { mutableStateOf("") }
 
@@ -326,9 +332,9 @@ fun PasswordField() {
 
     OutlinedTextField(
 
-        value = password,
+        value = pass.value,
 
-        onValueChange = { password = it },
+        onValueChange = { pass.value = it },
 
         label = { Text("Password") },
 
