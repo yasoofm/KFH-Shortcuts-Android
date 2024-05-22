@@ -10,7 +10,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.kfh_shortcuts.composable.AppScreen
 import com.example.kfh_shortcuts.composable.LoginScreen
 import com.example.kfh_shortcuts.composable.CatalogScreen
 
@@ -22,7 +21,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             KFHShortcutsTheme {
                 // A surface container using the 'background' color from the theme
-                AppScreen()
+               CatalogScreen()
 
             }
         }
