@@ -75,6 +75,6 @@ dependencies {
         implementation( "androidx.activity:activity-compose:1.6.1")
         implementation( "androidx.compose.foundation:foundation:1.4.0")
         implementation ("androidx.compose.runtime:runtime-livedata:1.4.0")
-
+    implementation ("androidx.navigation:navigation-compose:2.4.0-alpha10")
 
 }
