@@ -12,10 +12,9 @@ import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 @Composable
 fun MyNavHost(
     modifier: Modifier = Modifier,
+    viewModel: ProductViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ) {
-    val viewModel: ProductViewModel = viewModel()
-
 
     if (viewModel.token?.token != null) {
         navController.navigate(Routes.loginRoute)
