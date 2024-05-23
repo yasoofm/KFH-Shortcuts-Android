@@ -17,7 +17,7 @@ import androidx.compose.foundation.layout.*
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Password
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 
 import androidx.compose.material3.*
@@ -347,7 +347,7 @@ fun PasswordField(pass: MutableState<String>) {
             .border(1.dp, Color.White, shape = RoundedCornerShape(8.dp)),
 
         singleLine = true,
-        leadingIcon = { Icon(Icons.Default.Password, contentDescription = null) },
+        leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
 
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
 
