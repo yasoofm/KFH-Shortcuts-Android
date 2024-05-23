@@ -15,23 +15,24 @@ fun MyNavHost(
     viewModel: ProductViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ) {
+
     if (viewModel.token?.token != null) {
         navController.navigate(Routes.loginRoute)
+
     }
+
     androidx.navigation.compose.NavHost(
         navController = navController,
         startDestination = Routes.loginRoute,
         modifier = modifier
-    ) {
+    ){
+
         composable(Routes.loginRoute) {
-            LoginScreen(
-                viewModel,
-                onSignInClicked = { navController.navigate(Routes.AppScreenRoute) })
+            LoginScreen(viewModel, onSignInClicked = { navController.navigate(Routes.catalogRoute)})
         }
-        composable(Routes.AppScreenRoute) {
-            MainNavHost(
-                viewModel = viewModel
-            )
+        composable(Routes.chatbotRoute) {
+            CatalogScreen(viewModel, openChatBotClicked = { navController.navigate(Routes.chatbotRoute)})
         }
     }
+
 }

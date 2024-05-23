@@ -4,7 +4,6 @@ package com.example.kfh_shortcuts.composable
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -25,14 +24,13 @@ import androidx.lifecycle.ViewModel
 
 @Composable
 
-fun CatalogScreen(viewModel: ViewModel, openProductDetails: () -> Unit) {
+fun CatalogScreen(viewModel: ViewModel, OpenProductDetails: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF8F8F8))
     ) {
-        TopBar()
-        CardSection(openProductDetails = { openProductDetails()})
+        CardSection()
     }
 }
 
@@ -111,7 +109,7 @@ fun CategoryChip(text: String, selected: Boolean) {
 }
 @Composable
 
-fun CardSection(openProductDetails: () -> Unit) {
+fun CardSection() {
 
     Column(
 
@@ -163,7 +161,7 @@ fun CardSection(openProductDetails: () -> Unit) {
         ) {
 
             CardItem(
-            modifier = Modifier.clickable { openProductDetails() },
+
                 type = "Mastercard",
 
                 description = "Gold Card",
@@ -191,11 +189,11 @@ fun CardSection(openProductDetails: () -> Unit) {
 
 @Composable
 
-fun CardItem(modifier: Modifier = Modifier, type: String, description: String, background: Brush) {
+fun CardItem(type: String, description: String, background: Brush) {
 
     Box(
 
-        modifier = modifier
+        modifier = Modifier
 
             .size(150.dp)
 

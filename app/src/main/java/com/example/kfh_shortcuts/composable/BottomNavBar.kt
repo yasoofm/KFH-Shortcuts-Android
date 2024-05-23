@@ -35,6 +35,7 @@ fun BottomNavBar() {
             .background(
                 Brush.linearGradient(
                     colors = listOf(
+
                         Color(0xFF0D4228),
                         Color(0xFF007A3D),
                         Color.Black
@@ -45,6 +46,7 @@ fun BottomNavBar() {
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
+
         NavItem(Icons.Default.Home, "Catalog")
         NavItem(Icons.Default.List, "History")
         NavItem(Icons.Default.Star, "Rewards")
@@ -52,6 +54,7 @@ fun BottomNavBar() {
 }
 
 @Composable
+
 fun NavItem(icon: ImageVector, label: String) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
