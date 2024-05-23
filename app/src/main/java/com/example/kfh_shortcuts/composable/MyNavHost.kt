@@ -31,7 +31,9 @@ fun MyNavHost(
         composable(Routes.loginRoute) {
             LoginScreen(viewModel, onSignInClicked = { navController.navigate(Routes.catalogRoute)})
         }
+        composable(Routes.chatbotRoute) {
+            CatalogScreen(viewModel, openChatBotClicked = { navController.navigate(Routes.chatbotRoute)})
+        }
     }
-
 
 }

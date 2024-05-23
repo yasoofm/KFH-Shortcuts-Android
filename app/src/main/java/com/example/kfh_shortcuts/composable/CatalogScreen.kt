@@ -51,14 +51,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 import androidx.compose.ui.unit.sp
-
+import androidx.lifecycle.ViewModel
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 
 @Composable
 
-fun CatalogScreen() {
+fun CatalogScreen(viewModel: ViewModel,openChatBotClicked: () -> Unit ) {
 
     Scaffold(
 
@@ -66,7 +66,9 @@ fun CatalogScreen() {
 
             FloatingActionButton(
 
-                onClick = { /* TODO: Add action */ },
+                onClick = { /* TODO: Add action */
+
+                          },
 
                 shape = CircleShape,
 
@@ -74,7 +76,7 @@ fun CatalogScreen() {
 
                 contentColor = Color.White,
 
-                modifier = Modifier.padding(bottom = 80.dp, end = 16.dp) // Adjust bottom padding to avoid overlapping with bottom bar
+                modifier = Modifier.padding(bottom = 80.dp, end = 16.dp)
 
             ) {
 
