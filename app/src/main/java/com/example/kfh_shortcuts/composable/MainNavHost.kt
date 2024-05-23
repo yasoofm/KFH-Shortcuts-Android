@@ -21,6 +21,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.kfh_shortcuts.utiles.Routes
 import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 
 @Composable
 fun MainNavHost(
@@ -28,7 +29,6 @@ fun MainNavHost(
     viewModel: ProductViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ) {
-
     Scaffold(
         modifier = modifier,
         floatingActionButton = {
@@ -58,10 +58,20 @@ fun MainNavHost(
     {
         NavHost(
             navController = navController,
-            startDestination = Routes.loginRoute,
+            startDestination = Routes.catalogRoute,
             modifier = Modifier
                 .padding(it)
         ) {
+            composable(Routes.catalogRoute) {
+                CatalogScreen(viewModel, openProductDetails = { navController.navigate(Routes.DetailsRoute)})
+            }
+            composable(Routes.DetailsRoute) {
+                DetailScreen(viewModel, openRequestDetails = { navController.navigate(Routes.RequestProductRoute) })
+            }
+            composable(Routes.chatbotRoute) {
+            ChatBotScreen()
+            }
+
         }
     }
 }
