@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.kfh_shortcuts.utiles.Routes
 import com.example.kfh_shortcuts.viewmodel.ProductViewModel
+import androidx.navigation.compose.NavHost
 
 @Composable
 fun MyNavHost(
@@ -17,22 +18,32 @@ fun MyNavHost(
 ) {
 
     if (viewModel.token?.token != null) {
-        navController.navigate(Routes.loginRoute)
-
+        navController.navigate(Routes.catalogRoute)
     }
 
-    androidx.navigation.compose.NavHost(
+    NavHost(
         navController = navController,
         startDestination = Routes.loginRoute,
         modifier = modifier
-    ){
+    ) {
 
         composable(Routes.loginRoute) {
-            LoginScreen(viewModel, onSignInClicked = { navController.navigate(Routes.catalogRoute)})
+            LoginScreen(
+                viewModel,
+                onSignInClicked = { navController.navigate(Routes.catalogRoute) })
         }
-        composable(Routes.chatbotRoute) {
-            CatalogScreen(viewModel, openChatBotClicked = { navController.navigate(Routes.chatbotRoute)})
+
+
+        composable(Routes.catalogRoute) {
+            CatalogScreen(
+                viewModel,
+                OpenProductDetails = { navController.navigate(Routes.chatbotRoute) })
         }
+//        composable(Routes.chatbotRoute) {
+//            CatalogScreen(
+//                viewModel,
+//                //openChatBotClicked = { navController.navigate(Routes.chatbotRoute) })
+//        }
     }
 
 }
