@@ -62,14 +62,17 @@ fun MainNavHost(
             modifier = Modifier
                 .padding(it)
         ) {
+            composable(Routes.chatbotRoute) {
+                ChatBotScreen()
+            }
             composable(Routes.catalogRoute) {
                 CatalogScreen(viewModel, openProductDetails = { navController.navigate(Routes.DetailsRoute)})
             }
             composable(Routes.DetailsRoute) {
                 DetailScreen(viewModel, openRequestDetails = { navController.navigate(Routes.RequestProductRoute) })
             }
-            composable(Routes.chatbotRoute) {
-            ChatBotScreen()
+            composable(Routes.RequestProductRoute) {
+                SendRequest(viewModel, openSendRequest = { navController.navigate(Routes.SendRequestRoute) })
             }
 
         }
