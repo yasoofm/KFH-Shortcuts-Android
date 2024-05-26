@@ -1,5 +1,6 @@
 package com.example.kfh_shortcuts.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -10,6 +11,7 @@ import com.example.kfh_shortcuts.network.ProductAPIService
 import com.example.kfh_shortcuts.network.RetrofitHelper
 import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModel
+import com.example.kfh_shortcuts.model.Categorey
 import com.example.kfh_shortcuts.model.Product
 import com.example.kfh_shortcuts.model.response.LoginResponse
 
@@ -35,6 +37,45 @@ class ProductViewModel : ViewModel() {
         }
         return result
     }
+
+    var categories: List<Categorey> by mutableStateOf(emptyList())
+        private set
+
+
+    var selectedCategoryName: String? by mutableStateOf(null)
+        private set
+
+    var loginError: String? by mutableStateOf(null)
+
+     fun fetchCategories() {
+        viewModelScope.launch {
+            try {
+                val retrievedCategories = apiService.getCategory()
+                categories = retrievedCategories
+                if (retrievedCategories.isNotEmpty()) {
+                    fetchProductsByCategory(retrievedCategories.first().id.toString())
+                }
+            } catch (e: Exception) {
+                println("Error $e")
+
+            }
+        }
+    }
+
+    fun fetchProductsByCategory(categoryName: String) {
+        selectedCategoryName = categoryName
+        viewModelScope.launch {
+            try {
+                val retrievedProductItems = apiService.getProductItem(categoryName)
+                productItems = retrievedProductItems
+            } catch (e: Exception) {
+                println("Error $e")
+
+            }
+        }
+    }
+
+
 
 
 

@@ -45,14 +45,14 @@ fun DetailScreen(viewModel: ViewModel, openRequestDetails: () -> Unit) {
                 .padding(horizontal = 16.dp)
         ) {
             Spacer(modifier = Modifier.height(24.dp))
-            CardItem(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                type = "mastercard",
-                description = "",
-                background = Brush.linearGradient(listOf(Color.Gray, Color.White))
-
-            )
+//            CardItem(
+//                modifier = Modifier
+//                    .fillMaxWidth(),
+//                type = "mastercard",
+//                description = "",
+//                background = Brush.linearGradient(listOf(Color.Gray, Color.White))
+//
+//            )
             Spacer(modifier = Modifier.height(24.dp))
             Text(
                 text = "Details about the card",

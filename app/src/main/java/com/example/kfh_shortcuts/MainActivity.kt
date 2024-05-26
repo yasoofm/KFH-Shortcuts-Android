@@ -27,8 +27,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             KFHShortcutsTheme {
-                //MyNavHost()
-               MainNavHost()
+                MyNavHost()
+//               MainNavHost()
 
             }
         }

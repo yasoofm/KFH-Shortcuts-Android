@@ -1,43 +1,58 @@
 package com.example.kfh_shortcuts.composable
 
-
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
-
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import com.example.kfh_shortcuts.model.Categorey
+import com.example.kfh_shortcuts.model.Product
+import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-
 @Composable
+fun CatalogScreen(viewModel: ProductViewModel = viewModel(), openProductDetails: () -> Unit) {
 
-fun CatalogScreen(viewModel: ViewModel, openProductDetails: () -> Unit) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF8F8F8))
     ) {
-        TopBar()
-        CardSection(openProductDetails = { openProductDetails()})
+        TopBar(
+            viewModel.categories,
+            viewModel.selectedCategoryName,
+            viewModel::fetchProductsByCategory
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        ProductSection(viewModel.productItems)
     }
 }
 
 @Composable
-fun TopBar() {
+fun TopBar(
+    categories: List<Categorey>,
+    selectedCategoryName: String?,
+    onCategorySelected: (String) -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -72,22 +87,30 @@ fun TopBar() {
                 modifier = Modifier.padding(bottom = 8.dp)
             )
             Spacer(modifier = Modifier.weight(1f))
-            Row(
+            LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 16.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                CategoryChip("Cards", selected = true)
-                CategoryChip("Investments", selected = false)
-                CategoryChip("Loans", selected = false)
+                items(categories) { category ->
+                    CategoryChip(
+                        text = category.name,
+                        selected = category.name == selectedCategoryName,
+                        onClick = {
+
+                            onCategorySelected(category.name)
+
+                        }
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun CategoryChip(text: String, selected: Boolean) {
+fun CategoryChip(text: String, selected: Boolean, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .background(
@@ -100,6 +123,7 @@ fun CategoryChip(text: String, selected: Boolean) {
                 shape = RoundedCornerShape(100.dp)
             )
             .padding(horizontal = 16.dp, vertical = 8.dp)
+            .clickable(onClick = onClick)
     ) {
         Text(
             text = text,
@@ -109,127 +133,64 @@ fun CategoryChip(text: String, selected: Boolean) {
         )
     }
 }
+
 @Composable
-
-fun CardSection(openProductDetails: () -> Unit) {
-
+fun ProductSection(productItems: List<Product>) {
     Column(
-
         verticalArrangement = Arrangement.spacedBy(16.dp),
-
         horizontalAlignment = Alignment.CenterHorizontally,
-
         modifier = Modifier
-
             .fillMaxWidth()
-
             .padding(16.dp)
-
     ) {
-
-        Row(
-
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-
-            modifier = Modifier.fillMaxWidth()
-
-        ) {
-
-            CardItem(
-
-                type = "VISA",
-
-                description = "Basic Card",
-
-                background = Brush.linearGradient(listOf(Color.Blue, Color.Magenta, Color.Yellow))
-
-            )
-
-            CardItem(
-
-                type = "Mastercard",
-
-                description = "Silver Card",
-
-                background = Brush.linearGradient(listOf(Color.Gray, Color.White))
-            )
+        productItems.chunked(2).forEach { rowItems ->
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                rowItems.forEach { item ->
+                    ProductItem(
+                        name = item.name,
+                        description = item.description,
+                        imageUrl = item.image
+                    )
+                }
+            }
         }
-        Row(
-
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-
-            modifier = Modifier.fillMaxWidth()
-
-        ) {
-
-            CardItem(
-            modifier = Modifier.clickable { openProductDetails() },
-                type = "Mastercard",
-
-                description = "Gold Card",
-
-                background = Brush.linearGradient(listOf(Color.Yellow, Color.White))
-
-            )
-
-            CardItem(
-
-                type = "VISA",
-
-                description = "Platinum Card",
-
-                background = Brush.linearGradient(listOf(Color.Black, Color.DarkGray))
-
-            )
-
-        }
-
     }
-
 }
 
-
 @Composable
-
-fun CardItem(modifier: Modifier = Modifier, type: String, description: String, background: Brush) {
-
+fun ProductItem(name: String, description: String, imageUrl: String) {
     Box(
-
-        modifier = modifier
-
-            .size(150.dp)
-
-            .background(background, RoundedCornerShape(10.dp))
-
+        modifier = Modifier
+            .width(169.461.dp)
+            .height(116.975.dp)
+            .background(Color(0xFFF8F8F8), RoundedCornerShape(8.812.dp))
+            .border(1.dp, Color.LightGray, RoundedCornerShape(8.812.dp))
             .padding(16.dp)
-
     ) {
-
         Column {
-
-            Text(
-
-                text = type,
-
-                fontSize = 20.sp,
-
-                fontWeight = FontWeight.Bold,
-
-                color = Color.White
-
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(64.dp),
+                contentScale = ContentScale.Crop
             )
-
-            Spacer(modifier = Modifier.weight(1f))
-
+            Spacer(modifier = Modifier.height(8.dp))
             Text(
-
-                text = description,
-
+                text = name,
                 fontSize = 16.sp,
-
-                fontWeight = FontWeight.Medium,
-
-                color = Color.White
+                fontWeight = FontWeight.Bold,
+                color = Color.Black
+            )
+            Text(
+                text = description,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal,
+                color = Color.Gray
             )
         }
     }
