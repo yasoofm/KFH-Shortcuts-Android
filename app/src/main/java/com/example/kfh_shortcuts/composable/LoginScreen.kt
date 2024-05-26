@@ -1,10 +1,7 @@
-
 @file:OptIn(ExperimentalMaterial3Api::class)
 
 
-
 package com.example.kfh_shortcuts.composable
-
 
 
 import androidx.compose.foundation.Image
@@ -60,7 +57,7 @@ import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 @Composable
 
 
-fun LoginScreen(viewModel: ProductViewModel,onSignInClicked: () -> Unit) {
+fun LoginScreen(viewModel: ProductViewModel, onSignInClicked: () -> Unit) {
     var user = remember { mutableStateOf("") }
     var password = remember { mutableStateOf("") }
 
@@ -96,7 +93,9 @@ fun LoginScreen(viewModel: ProductViewModel,onSignInClicked: () -> Unit) {
 
                         brush = Brush.linearGradient(
 
-                            colors = listOf(Color(0xFF007A3D), Color(0xFF0D4228), Color(0xFF000000)),
+                            colors = listOf(
+                                Color(0xFF007A3D), Color(0xFF0D4228), Color(0xFF000000)
+                            ),
 
                             start = Offset.Zero,
 
@@ -157,22 +156,30 @@ fun LoginScreen(viewModel: ProductViewModel,onSignInClicked: () -> Unit) {
                 Button(
 
                     onClick = {
-                        println("user ${user.value}")
-                        println("pass ${password.value}")
                         viewModel.login(
-                        user.value,
-                        password.value
-                    )
-                        println(viewModel.token?.token)
-                              },
+                            user.value,
+                            password.value
+                        )
+                        println("before checking token")
+                        if (!viewModel.token?.token.isNullOrEmpty()) {
+                            println("token found")
+                            onSignInClicked()
+                        }
+                    },
 
                     Modifier
                         .width(344.dp)
                         .height(63.dp)
-                        .background(color = Color(0xFF007A3D), shape = RoundedCornerShape(size = 8.dp))
+                        .background(
+                            color = Color(0xFF007A3D), shape = RoundedCornerShape(size = 8.dp)
+                        )
                         .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
 
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF007A3D))
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF007A3D),
+                        Color(0xFF0D4228),
+                        Color(0xFF000000)
+                    )
                 )
                 {
 
@@ -187,7 +194,6 @@ fun LoginScreen(viewModel: ProductViewModel,onSignInClicked: () -> Unit) {
 
 
 }
-
 
 
 @Composable
@@ -205,7 +211,6 @@ fun Logo() {
     )
 
 }
-
 
 
 @Composable
@@ -247,7 +252,6 @@ fun Title() {
 }
 
 
-
 @Composable
 
 fun SignInPrompt() {
@@ -260,15 +264,14 @@ fun SignInPrompt() {
             fontWeight = FontWeight(700),
             color = Color(0xFF000000),
 
-        ),
-       modifier =  Modifier
-           .fillMaxWidth()
-           .padding(start=16.dp)
+            ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp)
 
 
     )
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -320,7 +323,6 @@ fun EmailField(user: MutableState<String>) {
 }
 
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 
@@ -356,7 +358,6 @@ fun PasswordField(pass: MutableState<String>) {
             val image = if (passwordVisible)
 
                 painterResource(id = R.drawable.ic_visible)
-
             else painterResource(id = R.drawable.ic_visible)
 
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -388,11 +389,9 @@ fun PasswordField(pass: MutableState<String>) {
 }
 
 
-
 @Composable
 
 fun LoginButton() {
-
 
 
 }
