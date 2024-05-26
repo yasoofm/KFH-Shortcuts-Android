@@ -16,7 +16,6 @@ fun MyNavHost(
     viewModel: ProductViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ) {
-
     if (viewModel.token?.token != null) {
         navController.navigate(Routes.catalogRoute)
     }
@@ -38,6 +37,7 @@ fun MyNavHost(
             CatalogScreen(
                 viewModel,
                 OpenProductDetails = { navController.navigate(Routes.chatbotRoute) })
+
         }
 //        composable(Routes.chatbotRoute) {
 //            CatalogScreen(
@@ -45,5 +45,4 @@ fun MyNavHost(
 //                //openChatBotClicked = { navController.navigate(Routes.chatbotRoute) })
 //        }
     }
-
 }
