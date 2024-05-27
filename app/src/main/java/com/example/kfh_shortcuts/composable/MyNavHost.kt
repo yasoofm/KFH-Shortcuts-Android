@@ -36,7 +36,8 @@ fun MyNavHost(
         composable(Routes.AppScreenRoute) {
             viewModel.fetchCategories()
             MainNavHost(viewModel=viewModel)
-        }
+
+        
 
     }
 }

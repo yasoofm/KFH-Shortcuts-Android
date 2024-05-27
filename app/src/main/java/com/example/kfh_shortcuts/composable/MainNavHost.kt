@@ -1,5 +1,6 @@
 package com.example.kfh_shortcuts.composable
 
+import HistoryScreen
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -39,20 +40,15 @@ fun MainNavHost(
                 shape = CircleShape,
                 containerColor = Color(0xFF007A3D),
                 contentColor = Color.White,
-                modifier = Modifier.padding(bottom = 80.dp, end = 16.dp)
+                modifier = Modifier.padding(bottom = 30.dp, end = 16.dp)
             ) {
                 Icon(Icons.Default.Face, contentDescription = "Chat")
             }
         },
         floatingActionButtonPosition = FabPosition.End,
         bottomBar = {
-            BottomAppBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp)
-            ) {
-                BottomNavBar()
-            }
+                BottomNavBar(navController)
+
         }
     )
     {
@@ -85,10 +81,16 @@ fun MainNavHost(
 
 
             composable(Routes.RequestProductRoute) {
-                SendRequest(
-                    viewModel,
-                    openSendRequest = { navController.navigate(Routes.SendRequestRoute) })
+                SendRequest(viewModel, returnToCatalog = { navController.navigate(Routes.catalogRoute) })
             }
+            composable(Routes.HistoryRoute) {
+                HistoryScreen()
+            }
+            composable(Routes.RewardRoute) {
+                RewardsScreen()
+            }
+
+
 
         }
     }
