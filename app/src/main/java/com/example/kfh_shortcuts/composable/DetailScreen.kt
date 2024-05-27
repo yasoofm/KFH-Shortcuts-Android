@@ -82,20 +82,12 @@ fun DetailScreen(viewModel: ViewModel, openRequestDetails: () -> Unit) {
                     .height(63.dp)
                     .background(color = Color(0xFF007A3D), shape = RoundedCornerShape(size = 8.dp))
                     .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
-
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF007A3D))
             )
             {
-
                 Text("Request", fontSize = 16.sp, color = Color.White)
-
             }
-
-
-
-
         }
-
     }
 }
 @Composable
