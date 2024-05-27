@@ -90,12 +90,7 @@ fun DetailScreen(viewModel: ViewModel, openRequestDetails: () -> Unit) {
                 Text("Request", fontSize = 16.sp, color = Color.White)
 
             }
-
-
-
-
         }
-
     }
 }
 @Composable
