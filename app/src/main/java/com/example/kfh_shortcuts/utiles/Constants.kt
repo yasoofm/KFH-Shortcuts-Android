@@ -4,7 +4,8 @@ class Constants {
     companion object {
         const val baseUrl = "https://backkfhshortcuts20240522175847.azurewebsites.net/"
         const val loginEndpoint = "Authentication/Login"
-        const val catalogEndpoint = "/getCatalog"
+        const val catalogEndpoint = "User/GetCategory"
+        const val productEndPoint = "User/GetProduct"
 
 
     }

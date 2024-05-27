@@ -1,54 +1,75 @@
+
 package com.example.kfh_shortcuts.composable
-
-
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
-
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
+import com.example.kfh_shortcuts.model.Categorey
+import com.example.kfh_shortcuts.model.Product
+import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-
 @Composable
-
-fun CatalogScreen(viewModel: ViewModel, openProductDetails: () -> Unit) {
+fun CatalogScreen(viewModel: ProductViewModel = viewModel(), openProductDetails: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF8F8F8))
+//            .background(Color(0xFFF5F5F5))
     ) {
-        TopBar()
-        CardSection(openProductDetails = { openProductDetails()})
+        TopBar(
+            viewModel.categories,
+            viewModel.selectedCategoryName,
+            viewModel::fetchProductsByCategory
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        ProductSection(viewModel, openProductDetails)
     }
 }
 
 @Composable
-fun TopBar() {
+fun TopBar(
+    categories: List<Categorey>,
+    selectedCategoryName: String?,
+    onCategorySelected: (String) -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(250.dp)
+            .height(220.dp)
             .graphicsLayer {
                 clip = true
-                shape = RoundedCornerShape(bottomStart = 29.dp, bottomEnd = 29.dp)
+                shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
             }
             .background(
                 brush = Brush.linearGradient(
-                    colors = listOf(Color(0xFF007A3D), Color(0xFF0D4228), Color(0xFF000000)),
+                    colors = listOf(
+                        Color(0xFF007A3D),
+                        Color(0xFF0D4228),
+                        Color(0xFF000000)
+                    ),
                     start = Offset.Zero,
                     end = Offset.Infinite
                 )
@@ -58,179 +79,147 @@ fun TopBar() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 24.dp),
+                .padding(horizontal = 16.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.Start
         ) {
-            Spacer(modifier = Modifier.height(80.dp))
+            Spacer(modifier = Modifier.height(40.dp))
             Text(
                 text = "Catalog",
-                fontSize = 34.sp,
-                lineHeight = 40.sp,
-                fontWeight = FontWeight.Medium,
+                fontSize = 28.sp,
+                lineHeight = 32.sp,
+                fontWeight = FontWeight.Bold,
                 color = Color.White,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
-            Spacer(modifier = Modifier.weight(1f))
-            Row(
+            LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 16.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                    .padding(bottom = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                CategoryChip("Cards", selected = true)
-                CategoryChip("Investments", selected = false)
-                CategoryChip("Loans", selected = false)
+                items(categories) { category ->
+                    CategoryChip(
+                        text = category.name,
+                        selected = category.name == selectedCategoryName,
+                        onClick = { onCategorySelected(category.name) }
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun CategoryChip(text: String, selected: Boolean) {
+fun CategoryChip(text: String, selected: Boolean, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .background(
-                color = if (selected) Color(0xFF0D4228) else Color.Transparent,
-                shape = RoundedCornerShape(100.dp)
+                color = if (selected) Color.White else Color.Transparent,
+                shape = RoundedCornerShape(50.dp)
             )
             .border(
                 width = 1.dp,
                 color = if (selected) Color.Transparent else Color.White,
-                shape = RoundedCornerShape(100.dp)
+                shape = RoundedCornerShape(50.dp)
             )
-            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .padding(horizontal = 12.dp, vertical = 6.dp)
+            .clickable(onClick = onClick)
     ) {
         Text(
             text = text,
-            color = if (selected) Color.White else Color.White,
-            fontSize = 16.sp,
+            color = if (selected) Color(0xFF0D4228) else Color.White,
+            fontSize = 14.sp,
             fontWeight = FontWeight.Medium
         )
     }
 }
+
 @Composable
-
-fun CardSection(openProductDetails: () -> Unit) {
-
-    Column(
-
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-
-        horizontalAlignment = Alignment.CenterHorizontally,
-
+fun ProductSection(viewModel: ProductViewModel = viewModel(), openProductDetails: (String) -> Unit) {
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
-
             .fillMaxWidth()
-
-            .padding(16.dp)
-
+            .padding(8.dp)
     ) {
-
-        Row(
-
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-
-            modifier = Modifier.fillMaxWidth()
-
-        ) {
-
-            CardItem(
-
-                type = "VISA",
-
-                description = "Basic Card",
-
-                background = Brush.linearGradient(listOf(Color.Blue, Color.Magenta, Color.Yellow))
-
-            )
-
-            CardItem(
-
-                type = "Mastercard",
-
-                description = "Silver Card",
-
-                background = Brush.linearGradient(listOf(Color.Gray, Color.White))
-            )
+        itemsIndexed(viewModel.productItems.chunked(2)) { _, rowItems ->
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                rowItems.forEach { item ->
+                    ProductItem(
+                        name = item.name,
+                        description = item.description,
+                        imageUrl = item.image,
+                        onClick = {
+                            viewModel.selectedProduct = item
+                            openProductDetails(item.id.toString())
+                        },
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+            }
         }
-        Row(
-
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-
-            modifier = Modifier.fillMaxWidth()
-
-        ) {
-
-            CardItem(
-            modifier = Modifier.clickable { openProductDetails() },
-                type = "Mastercard",
-
-                description = "Gold Card",
-
-                background = Brush.linearGradient(listOf(Color.Yellow, Color.White))
-
-            )
-
-            CardItem(
-
-                type = "VISA",
-
-                description = "Platinum Card",
-
-                background = Brush.linearGradient(listOf(Color.Black, Color.DarkGray))
-
-            )
-
-        }
-
     }
-
 }
 
-
 @Composable
-
-fun CardItem(modifier: Modifier = Modifier, type: String, description: String, background: Brush) {
-
+fun ProductItem(
+    name: String,
+    description: String,
+    imageUrl: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Box(
-
         modifier = modifier
-
-            .size(150.dp)
-
-            .background(background, RoundedCornerShape(10.dp))
-
-            .padding(16.dp)
-
+            .clickable(onClick = onClick)
+            .fillMaxWidth()
     ) {
-
-        Column {
-
-            Text(
-
-                text = type,
-
-                fontSize = 20.sp,
-
-                fontWeight = FontWeight.Bold,
-
-                color = Color.White
-
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Text(
-
-                text = description,
-
-                fontSize = 16.sp,
-
-                fontWeight = FontWeight.Medium,
-
-                color = Color.White
-            )
+        Box(
+            modifier = Modifier
+                .shadow(4.dp, RoundedCornerShape(16.dp))
+                .background(Color.White, RoundedCornerShape(16.dp))
+                .fillMaxWidth()
+                .padding(top = 70.dp) // Adjust padding to move the content below the image
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
+            ) {
+                Spacer(modifier = Modifier.height(70.dp)) // Spacer to create space for the image
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    ),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Color(0xFF0D4228)
+                    ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
+
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(140.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .align(Alignment.TopCenter),
+            contentScale = ContentScale.Crop
+        )
     }
 }

@@ -15,7 +15,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.kfh_shortcuts.composable.CatalogScreen
 import com.example.kfh_shortcuts.composable.ChatBotScreen
-import com.example.kfh_shortcuts.composable.DetailScreen
 import com.example.kfh_shortcuts.composable.MainNavHost
 import com.example.kfh_shortcuts.composable.MyNavHost
 
@@ -27,8 +26,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             KFHShortcutsTheme {
-                //MyNavHost()
-               MainNavHost()
+                MyNavHost()
+//               MainNavHost()
 
             }
         }

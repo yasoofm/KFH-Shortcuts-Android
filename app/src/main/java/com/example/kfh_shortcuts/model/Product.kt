@@ -4,8 +4,9 @@ class Product (
     var id: Int,
     var image: String,
     var shariah: String,
-    var Name: String,
-    var Description: String,
-    var TargetAudience: String,
-    var CategoreyId: Int
+    var name: String,
+    var description: String,
+    var targetAudience: String,
+    var categoryName: String,
+    var awardedPoints: Int
 )

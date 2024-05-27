@@ -16,8 +16,9 @@ fun MyNavHost(
     viewModel: ProductViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
 ) {
+
     if (viewModel.token?.token != null) {
-        navController.navigate(Routes.catalogRoute)
+        navController.navigate(Routes.AppScreenRoute)
     }
 
     NavHost(
@@ -29,20 +30,14 @@ fun MyNavHost(
         composable(Routes.loginRoute) {
             LoginScreen(
                 viewModel,
-                onSignInClicked = { navController.navigate(Routes.catalogRoute) })
+                onSignInClicked = { navController.navigate(Routes.AppScreenRoute) })
         }
 
+        composable(Routes.AppScreenRoute) {
+            viewModel.fetchCategories()
+            MainNavHost(viewModel=viewModel)
 
-        composable(Routes.catalogRoute) {
-            CatalogScreen(
-                viewModel,
-                openProductDetails = { navController.navigate(Routes.chatbotRoute) })
+        
 
-        }
-//        composable(Routes.chatbotRoute) {
-//            CatalogScreen(
-//                viewModel,
-//                //openChatBotClicked = { navController.navigate(Routes.chatbotRoute) })
-//        }
     }
 }

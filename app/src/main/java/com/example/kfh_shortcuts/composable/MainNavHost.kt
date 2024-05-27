@@ -62,11 +62,24 @@ fun MainNavHost(
                 ChatBotScreen()
             }
             composable(Routes.catalogRoute) {
-                CatalogScreen(viewModel, openProductDetails = { navController.navigate(Routes.DetailsRoute)})
+                CatalogScreen(
+                    viewModel,
+                    openProductDetails = { navController.navigate(Routes.DetailsRoute) })
             }
             composable(Routes.DetailsRoute) {
-                DetailScreen(viewModel, openRequestDetails = { navController.navigate(Routes.RequestProductRoute) })
+                DetailScreen(
+                    viewModel,
+                    openRequestDetails = { navController.navigate(Routes.RequestProductRoute) })
             }
+
+
+            composable(Routes.RequestProductRoute) {
+                SendRequest(
+                    viewModel,
+                    openSendRequest = { navController.navigate(Routes.SendRequestRoute) })
+            }
+
+
             composable(Routes.RequestProductRoute) {
                 SendRequest(viewModel, returnToCatalog = { navController.navigate(Routes.catalogRoute) })
             }
