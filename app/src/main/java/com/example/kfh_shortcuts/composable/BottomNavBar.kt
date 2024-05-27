@@ -24,11 +24,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
+import com.example.kfh_shortcuts.utiles.Routes
 
 
 @Composable
-
-fun BottomNavBar() {
+fun BottomNavBar(navController: NavHostController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -45,17 +46,20 @@ fun BottomNavBar() {
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        NavItem(Icons.Default.Home, "Catalog")
-        NavItem(Icons.Default.List, "History")
-        NavItem(Icons.Default.Star, "Rewards")
+        NavItem(Icons.Default.Home, "Catalog", { navController.navigate(Routes.catalogRoute)})
+        NavItem(Icons.Default.List, "History", { navController.navigate(Routes.HistoryRoute)})
+        NavItem(Icons.Default.Star, "Rewards", { navController.navigate(Routes.RewardRoute)})
     }
 }
 
 @Composable
-fun NavItem(icon: ImageVector, label: String) {
+fun NavItem(icon: ImageVector, label: String, navigateToScreen: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.clickable { /* TODO: Add action */ }
+        modifier = Modifier.clickable {
+       navigateToScreen()
+
+        }
     ) {
         Icon(
             imageVector = icon,

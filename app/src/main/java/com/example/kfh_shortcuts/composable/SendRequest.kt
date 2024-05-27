@@ -1,6 +1,4 @@
-
 package com.example.kfh_shortcuts.composable
-
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,7 +26,7 @@ import androidx.lifecycle.ViewModel
 import com.example.kfh_shortcuts.R
 
 @Composable
-fun SendRequest(viewModel: ViewModel, openSendRequest: () -> Unit) {
+fun SendRequest(viewModel: ViewModel, returnToCatalog: () -> Unit) {
     var showDialog by remember { mutableStateOf(false) }
 
     Column(
@@ -47,18 +45,18 @@ fun SendRequest(viewModel: ViewModel, openSendRequest: () -> Unit) {
             Text(
                 text = "Send Your request",
                 style = TextStyle(
-                    fontSize = 26.sp,
+                    fontSize = 30.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color(0xFF141414),
                     textAlign = TextAlign.Center,
                 ),
                 modifier = Modifier.fillMaxWidth()
             )
-            Spacer(modifier = Modifier.height(80.dp))
+            Spacer(modifier = Modifier.height(120.dp))
             Text(
                 text = "Client's Name",
                 style = TextStyle(
-                    fontSize = 14.sp,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
                 ),
@@ -78,7 +76,7 @@ fun SendRequest(viewModel: ViewModel, openSendRequest: () -> Unit) {
             Text(
                 text = "Client's Mobile Number",
                 style = TextStyle(
-                    fontSize = 14.sp,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color.Black
                 ),
@@ -109,9 +107,14 @@ fun SendRequest(viewModel: ViewModel, openSendRequest: () -> Unit) {
             ) {
                 Text("Submit", style = TextStyle(fontSize = 18.sp, color = Color.White))
             }
+
+            Spacer(modifier = Modifier.height(32.dp))
             if (showDialog)
             {
-                CongratsDialog(onDismiss = { showDialog = false})
+                CongratsDialog(onDismiss = {
+                    showDialog = false
+                    returnToCatalog()
+                })
             }
         }
     }
@@ -131,34 +134,34 @@ fun CongratsDialog(onDismiss: () -> Unit) {
                 )
             )
             .clickable {
-          //todo
+                onDismiss()
             },
         onDismissRequest = onDismiss)
-        {
-            Column {
-                Text(
-                    text = "Congrats!",
-                    style = TextStyle(
-                        fontSize = 40.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(36.dp)
-                )
-                Text(
-                    text = "You earned 10 points",
-                    style = TextStyle(
-                        fontSize = 27.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        textAlign = TextAlign.Center,
-                    ),
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
+    {
+        Column {
+            Text(
+                text = "Congrats!",
+                style = TextStyle(
+                    fontSize = 40.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(36.dp)
+            )
+            Text(
+                text = "You earned 10 points",
+                style = TextStyle(
+                    fontSize = 27.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White,
+                    textAlign = TextAlign.Center,
+                ),
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
     }
 }
 
