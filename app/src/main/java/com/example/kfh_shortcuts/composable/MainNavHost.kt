@@ -1,5 +1,6 @@
 package com.example.kfh_shortcuts.composable
 
+import HistoryScreen
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
