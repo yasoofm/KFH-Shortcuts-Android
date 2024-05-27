@@ -36,7 +36,7 @@ fun MyNavHost(
         composable(Routes.catalogRoute) {
             CatalogScreen(
                 viewModel,
-                OpenProductDetails = { navController.navigate(Routes.chatbotRoute) })
+                openProductDetails = { navController.navigate(Routes.chatbotRoute) })
 
         }
 //        composable(Routes.chatbotRoute) {
