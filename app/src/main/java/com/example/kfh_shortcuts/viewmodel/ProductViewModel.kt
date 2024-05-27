@@ -52,8 +52,9 @@ class ProductViewModel : ViewModel() {
             try {
                 val retrievedCategories = apiService.getCategory()
                 categories = retrievedCategories
-                if (retrievedCategories.isNotEmpty()) {
-                    fetchProductsByCategory(retrievedCategories.first().id.toString())
+                val  defaultCategorey = retrievedCategories.find { it.name  == "Cards" }
+                if (defaultCategorey != null) {
+                    fetchProductsByCategory(defaultCategorey.name)
                 }
             } catch (e: Exception) {
                 println("Error $e")
