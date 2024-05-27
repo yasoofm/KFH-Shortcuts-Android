@@ -7,6 +7,6 @@ class Product (
     var name: String,
     var description: String,
     var targetAudience: String,
-    var categoreyName: String,
+    var categoryName: String,
     var awardedPoints: Int
 )

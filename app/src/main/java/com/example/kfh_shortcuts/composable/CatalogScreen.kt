@@ -1,3 +1,4 @@
+
 package com.example.kfh_shortcuts.composable
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -36,11 +37,15 @@ fun CatalogScreen(viewModel: ProductViewModel = viewModel(), openProductDetails:
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF5F5F5))
+//            .background(Color(0xFFF5F5F5))
     ) {
-        TopBar(viewModel.categories, viewModel.selectedCategoryName, viewModel::fetchProductsByCategory)
+        TopBar(
+            viewModel.categories,
+            viewModel.selectedCategoryName,
+            viewModel::fetchProductsByCategory
+        )
         Spacer(modifier = Modifier.height(8.dp))
-        ProductSection(viewModel.productItems, openProductDetails)
+        ProductSection(viewModel, openProductDetails)
     }
 }
 
@@ -60,7 +65,11 @@ fun TopBar(
             }
             .background(
                 brush = Brush.linearGradient(
-                    colors = listOf(Color(0xFF007A3D), Color(0xFF0D4228)),
+                    colors = listOf(
+                        Color(0xFF007A3D),
+                        Color(0xFF0D4228),
+                        Color(0xFF000000)
+                    ),
                     start = Offset.Zero,
                     end = Offset.Infinite
                 )
@@ -106,7 +115,7 @@ fun CategoryChip(text: String, selected: Boolean, onClick: () -> Unit) {
     Box(
         modifier = Modifier
             .background(
-                color = if (selected) Color(0xFF0D4228) else Color.Transparent,
+                color = if (selected) Color.White else Color.Transparent,
                 shape = RoundedCornerShape(50.dp)
             )
             .border(
@@ -119,7 +128,7 @@ fun CategoryChip(text: String, selected: Boolean, onClick: () -> Unit) {
     ) {
         Text(
             text = text,
-            color = Color.White,
+            color = if (selected) Color(0xFF0D4228) else Color.White,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium
         )
@@ -127,14 +136,14 @@ fun CategoryChip(text: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-fun ProductSection(productItems: List<Product>, openProductDetails: (String) -> Unit) {
+fun ProductSection(viewModel: ProductViewModel = viewModel(), openProductDetails: (String) -> Unit) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
     ) {
-        itemsIndexed(productItems.chunked(2)) { _, rowItems ->
+        itemsIndexed(viewModel.productItems.chunked(2)) { _, rowItems ->
             Row(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxWidth()
@@ -144,7 +153,10 @@ fun ProductSection(productItems: List<Product>, openProductDetails: (String) -> 
                         name = item.name,
                         description = item.description,
                         imageUrl = item.image,
-                        onClick = { openProductDetails(item.id.toString()) },
+                        onClick = {
+                            viewModel.selectedProduct = item
+                            openProductDetails(item.id.toString())
+                        },
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -154,47 +166,60 @@ fun ProductSection(productItems: List<Product>, openProductDetails: (String) -> 
 }
 
 @Composable
-fun ProductItem(name: String, description: String, imageUrl: String, onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Card(
-        shape = RoundedCornerShape(16.dp),
+fun ProductItem(
+    name: String,
+    description: String,
+    imageUrl: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
         modifier = modifier
             .clickable(onClick = onClick)
-            .shadow(4.dp, RoundedCornerShape(16.dp))
-            .fillMaxWidth(),
+            .fillMaxWidth()
     ) {
-        Column(
+        Box(
             modifier = Modifier
-                .background(Color.White)
-                .padding(8.dp)
+                .shadow(4.dp, RoundedCornerShape(16.dp))
+                .background(Color.White, RoundedCornerShape(16.dp))
+                .fillMaxWidth()
+                .padding(top = 70.dp) // Adjust padding to move the content below the image
         ) {
-            AsyncImage(
-                model = imageUrl,
-                contentDescription = null,
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(140.dp)
-                    .clip(RoundedCornerShape(16.dp)),
-                contentScale = ContentScale.Crop
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = name,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                    color = Color.Black
-                ),
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = Color.Gray
-                ),
-                maxLines = 2,
-                overflow = TextOverflow.Ellipsis
-            )
+                    .padding(horizontal = 8.dp, vertical = 8.dp)
+            ) {
+                Spacer(modifier = Modifier.height(70.dp)) // Spacer to create space for the image
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black
+                    ),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = description,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = Color(0xFF0D4228)
+                    ),
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
         }
+
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = null,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(140.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .align(Alignment.TopCenter),
+            contentScale = ContentScale.Crop
+        )
     }
 }

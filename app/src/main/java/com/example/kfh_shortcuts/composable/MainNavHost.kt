@@ -75,6 +75,8 @@ fun MainNavHost(
                     viewModel,
                     openRequestDetails = { navController.navigate(Routes.RequestProductRoute) })
             }
+
+
             composable(Routes.RequestProductRoute) {
                 SendRequest(
                     viewModel,

@@ -17,18 +17,23 @@ import com.example.kfh_shortcuts.model.response.LoginResponse
 
 
 class ProductViewModel : ViewModel() {
+
     private val apiService = RetrofitHelper.getInstance().create(ProductAPIService::class.java)
     var token: TokenResponse? by mutableStateOf(null)
     var productItems: List<Product> by mutableStateOf(emptyList())
+    var categories: List<Categorey> by mutableStateOf(emptyList())
+        private set
+    var selectedCategoryName: String? by mutableStateOf(null)
+        private set
+    var loginError: String? by mutableStateOf(null)
 
+    var selectedProduct: Product? by mutableStateOf(null)
 
     fun login(username: String, password: String): Boolean {
         var result = false;
         viewModelScope.launch {
             try {
                 val response = apiService.login(Login(username, password))
-                println(response.message())
-                println(response.code())
                 token = response.body()
                 result = true
             } catch (e: Exception) {
@@ -38,21 +43,13 @@ class ProductViewModel : ViewModel() {
         return result
     }
 
-    var categories: List<Categorey> by mutableStateOf(emptyList())
-        private set
 
-
-    var selectedCategoryName: String? by mutableStateOf(null)
-        private set
-
-    var loginError: String? by mutableStateOf(null)
-
-     fun fetchCategories() {
+    fun fetchCategories() {
         viewModelScope.launch {
             try {
                 val retrievedCategories = apiService.getCategory()
                 categories = retrievedCategories
-                val  defaultCategorey = retrievedCategories.find { it.name  == "Cards" }
+                val defaultCategorey = retrievedCategories.find { it.name == "Cards" }
                 if (defaultCategorey != null) {
                     fetchProductsByCategory(defaultCategorey.name)
                 }
@@ -75,10 +72,6 @@ class ProductViewModel : ViewModel() {
             }
         }
     }
-
-
-
-
 
 
 }

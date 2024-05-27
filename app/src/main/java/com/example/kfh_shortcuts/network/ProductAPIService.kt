@@ -16,11 +16,11 @@ interface ProductAPIService {
     @POST(Constants.loginEndpoint)
     suspend fun login(@Body user: Login): Response<TokenResponse>
 
+    @GET(Constants.catalogEndpoint)
+    suspend fun getCategory(): List<Categorey>
 
-    @GET (Constants.catalogEndpoint)
-    suspend fun getCategory():List<Categorey>
     @GET(Constants.productEndPoint)
-    suspend fun getProductItem(@Query("category") category: String):List<Product>
+    suspend fun getProductItem(@Query("category") category: String): List<Product>
 
-    
+
 }

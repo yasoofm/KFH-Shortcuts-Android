@@ -9,5 +9,6 @@ class Routes {
         val chatbotRoute= "chatbot"
         const val catalogRoute = "CatalogRoute"
         const val loginRoute = "LoginRoute"
+
     }
 }
