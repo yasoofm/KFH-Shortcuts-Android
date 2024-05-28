@@ -4,7 +4,7 @@ import com.example.kfh_shortcuts.model.Categorey
 import com.example.kfh_shortcuts.model.Login
 import com.example.kfh_shortcuts.model.Product
 import com.example.kfh_shortcuts.model.ProductRequest
-import com.example.kfh_shortcuts.model.response.LoginResponse
+import com.example.kfh_shortcuts.model.response.Reward
 import com.example.kfh_shortcuts.model.response.TokenResponse
 import com.example.kfh_shortcuts.utiles.Constants
 import retrofit2.Response
@@ -32,7 +32,7 @@ interface ProductAPIService {
 
     @POST(Constants.rewardRequestEndPoints) suspend fun  rewardRequest(
         @Header(Constants.authorization) token: String?,
-        @Body request: ProductRequest
+        @Body request: Reward
     ): Response<Void>
 
 

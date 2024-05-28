@@ -56,8 +56,11 @@ fun DetailScreen(viewModel: ProductViewModel = viewModel(), openRequestDetails: 
                 .padding(horizontal = 16.dp, vertical = 16.dp)
                 .offset(y = (-10).dp),
             shape = RoundedCornerShape(8.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D4228),)
-        ) {
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFF007A3D),
+                Color(0xFF0D4228),
+                Color(0xFF000000)
+            )        ) {
             Text("Request", fontSize = 18.sp, color = Color.White, fontWeight = FontWeight.Bold)
         }
     }
