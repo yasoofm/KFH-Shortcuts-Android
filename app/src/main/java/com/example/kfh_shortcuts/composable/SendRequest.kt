@@ -97,15 +97,20 @@ fun SendRequest(viewModel: ProductViewModel, returnToCatalog: () -> Unit) {
                     viewModel.productRequest(clientName, clientNumber)
                     showDialog = true
                 },
-                Modifier
-                    .width(344.dp)
-                    .height(63.dp)
-                    .background(color =Color(0xFF0D4228), shape = RoundedCornerShape(size = 8.dp))
-                    .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
-                shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D4228),)
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(90.dp)
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
+                    .offset(y = (-10).dp),
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF007A3D),
+                    Color(0xFF0D4228),
+                    Color(0xFF000000)
+                )
             ) {
-                Text("Submit", style = TextStyle(fontSize = 18.sp, color = Color.White))
+                Text("Request", fontSize = 18.sp, color = Color.White, fontWeight = FontWeight.Bold)
             }
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -123,11 +128,13 @@ fun SendRequest(viewModel: ProductViewModel, returnToCatalog: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CongratsDialog(title: String ="Congrats!",
-                   description: String="You earned 10 points",
-                   titleSize: TextUnit = 40.sp,
-                   descriptionSize: TextUnit = 27.sp,
-                   onDismiss: () -> Unit) {
+fun CongratsDialog(
+    title: String = "Congrats!",
+    description: String = "You earned 10 points",
+    titleSize: TextUnit = 40.sp,
+    descriptionSize: TextUnit = 27.sp,
+    onDismiss: () -> Unit
+) {
     AlertDialog(
         modifier = Modifier
             .width(368.dp)
