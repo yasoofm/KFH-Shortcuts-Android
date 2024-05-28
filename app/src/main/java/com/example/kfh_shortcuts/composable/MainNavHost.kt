@@ -76,7 +76,7 @@ fun MainNavHost(
             composable(Routes.RequestProductRoute) {
                 SendRequest(
                     viewModel,
-                    openSendRequest = { navController.navigate(Routes.SendRequestRoute) })
+                    returnToCatalog = { navController.navigate(Routes.SendRequestRoute) })
             }
 
 
