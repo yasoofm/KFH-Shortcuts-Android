@@ -1,13 +1,16 @@
 package com.example.kfh_shortcuts.composable
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -16,14 +19,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.kfh_shortcuts.model.Product
 import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 
-@Composable fun DetailScreen(viewModel: ProductViewModel = viewModel(), openRequestDetails: () -> Unit){
-
+@Composable
+fun DetailScreen(viewModel: ProductViewModel = viewModel(), openRequestDetails: () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -32,21 +34,31 @@ import com.example.kfh_shortcuts.viewmodel.ProductViewModel
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color(0xFFF5F5F5))
+                .padding(bottom = 80.dp)
         ) {
             TopBar()
-            ProductDetails(productDetail = viewModel.selectedProduct!!)
+            LazyColumn(
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier.weight(1f)
+            ) {
+                item {
+                    ProductDetails(productDetail = viewModel.selectedProduct!!)
+                }
+            }
         }
         Button(
             onClick = openRequestDetails,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(48.dp)
+                .height(90.dp)
                 .align(Alignment.BottomCenter)
-                .padding(14.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF007A3D))
+                .padding(horizontal = 16.dp, vertical = 16.dp)
+                .offset(y = (-10).dp),
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D4228),)
         ) {
-            Text("Request", fontSize = 16.sp, color = Color.White)
+            Text("Request", fontSize = 18.sp, color = Color.White, fontWeight = FontWeight.Bold)
         }
     }
 }
@@ -56,22 +68,33 @@ fun TopBar() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(120.dp)
+            .height(100.dp)
             .graphicsLayer {
                 clip = true
                 shape = RoundedCornerShape(bottomStart = 29.dp, bottomEnd = 29.dp)
             }
             .background(
                 brush = Brush.linearGradient(
-                    colors = listOf(Color(0xFF007A3D), Color(0xFF0D4228)),
+                    colors = listOf(
+                        Color(0xFF007A3D),
+                        Color(0xFF0D4228),
+                        Color(0xFF000000)
+                    ),
                     start = Offset.Zero,
                     end = Offset.Infinite
                 )
             ),
-        contentAlignment = Alignment.Center
-    ) {
 
+    contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Info,
+            contentDescription = "Info Icon",
+            tint = Color.White,
+            modifier = Modifier.size(48.dp)
+        )
     }
+
 }
 
 @Composable
@@ -80,16 +103,15 @@ fun ProductDetails(productDetail: Product) {
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.White)
+            .clip(RoundedCornerShape(10.dp))
             .padding(16.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .shadow(4.dp)
     ) {
         AsyncImage(
             model = productDetail.image,
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
+                .height(220.dp)
                 .clip(RoundedCornerShape(16.dp)),
             contentScale = ContentScale.Crop
         )
@@ -112,6 +134,8 @@ fun ProductDetails(productDetail: Product) {
         )
 
         Divider(color = Color.LightGray, thickness = 1.dp)
+
+        Spacer(modifier = Modifier.height(16.dp))
 
         TextInfoRow(label = "Shariah Compliance:", value = productDetail.shariah)
         TextInfoRow(label = "Target Audience:", value = productDetail.targetAudience)

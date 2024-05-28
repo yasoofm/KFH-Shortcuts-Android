@@ -3,6 +3,7 @@ package com.example.kfh_shortcuts.viewmodel
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.example.kfh_shortcuts.model.Login
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModel
 import com.example.kfh_shortcuts.model.Categorey
 import com.example.kfh_shortcuts.model.Product
+import com.example.kfh_shortcuts.model.ProductRequest
 import com.example.kfh_shortcuts.model.response.LoginResponse
 
 
@@ -25,22 +27,28 @@ class ProductViewModel : ViewModel() {
         private set
     var selectedCategoryName: String? by mutableStateOf(null)
         private set
-    var loginError: String? by mutableStateOf(null)
+    var isLoggedIn: Boolean by mutableStateOf(false)
 
     var selectedProduct: Product? by mutableStateOf(null)
+    var showValidationError: Boolean by mutableStateOf(true)
 
-    fun login(username: String, password: String): Boolean {
-        var result = false;
+
+    fun login(username: String, password: String) {
         viewModelScope.launch {
             try {
                 val response = apiService.login(Login(username, password))
                 token = response.body()
-                result = true
+
+                if (!response.isSuccessful) {
+                    showValidationError = false;
+                } else {
+                    isLoggedIn = true
+                }
+
             } catch (e: Exception) {
                 println("Error $e")
             }
         }
-        return result
     }
 
 
@@ -72,6 +80,34 @@ class ProductViewModel : ViewModel() {
             }
         }
     }
+
+    fun productRequest(clientName: String, clientNumber: String) {
+        viewModelScope.launch {
+            try {
+                if (selectedProduct != null)
+                    apiService.productRequest(
+                        token = token?.getBearerToken(),
+                        ProductRequest(clientName, clientNumber, selectedProduct!!.id)
+                    )
+
+            } catch (e: Exception) {
+                println("Error $e")
+            }
+        }
+    }
+
+//    fun rewardRequest(clientName: String, clientNumber: String) {
+//        viewModelScope.launch {
+//            try {
+//                if (selectedProduct != null)
+//                    apiService.rewardRequest(token = token?.getBearerToken(),
+//                        rewardRequest(clientName, clientNumber, selectedProduct!!.id))
+//
+//            } catch (e: Exception) {
+//                println("Error $e")
+//            }
+//        }
+//    }
 
 
 }

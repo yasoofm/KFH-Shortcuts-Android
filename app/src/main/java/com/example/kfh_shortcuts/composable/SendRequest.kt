@@ -5,11 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,12 +18,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import com.example.kfh_shortcuts.R
+import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 
 @Composable
-fun SendRequest(viewModel: ViewModel, returnToCatalog: () -> Unit) {
+fun SendRequest(viewModel: ProductViewModel, returnToCatalog: () -> Unit) {
     var showDialog by remember { mutableStateOf(false) }
+    var clientName by remember { mutableStateOf("") }
+    var clientNumber by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -65,8 +63,8 @@ fun SendRequest(viewModel: ViewModel, returnToCatalog: () -> Unit) {
                     .padding(start = 4.dp)
             )
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = clientName,
+                onValueChange = { clientName = it },
                 label = { Text("Enter Name") },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -85,8 +83,8 @@ fun SendRequest(viewModel: ViewModel, returnToCatalog: () -> Unit) {
                     .padding(start = 4.dp)
             )
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = clientNumber,
+                onValueChange = { clientNumber = it },
                 leadingIcon = { Text("+965") },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -95,22 +93,22 @@ fun SendRequest(viewModel: ViewModel, returnToCatalog: () -> Unit) {
             Spacer(modifier = Modifier.height(32.dp))
             Button(
                 onClick = {
+                    viewModel.productRequest(clientName, clientNumber)
                     showDialog = true
-                          },
+                },
                 Modifier
                     .width(344.dp)
                     .height(63.dp)
-                    .background(color = Color(0xFF007A3D), shape = RoundedCornerShape(size = 8.dp))
+                    .background(color =Color(0xFF0D4228), shape = RoundedCornerShape(size = 8.dp))
                     .padding(start = 8.dp, top = 8.dp, end = 8.dp, bottom = 8.dp),
                 shape = RoundedCornerShape(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF007A3D))
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0D4228),)
             ) {
                 Text("Submit", style = TextStyle(fontSize = 18.sp, color = Color.White))
             }
 
             Spacer(modifier = Modifier.height(32.dp))
-            if (showDialog)
-            {
+            if (showDialog) {
                 CongratsDialog(onDismiss = {
                     showDialog = false
                     returnToCatalog()
@@ -136,8 +134,8 @@ fun CongratsDialog(onDismiss: () -> Unit) {
             .clickable {
                 onDismiss()
             },
-        onDismissRequest = onDismiss)
-    {
+        onDismissRequest = onDismiss
+    ) {
         Column {
             Text(
                 text = "Congrats!",
@@ -190,29 +188,3 @@ fun TopBaaar() {
         )
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
