@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
@@ -111,7 +112,8 @@ fun SendRequest(viewModel: ViewModel, returnToCatalog: () -> Unit) {
             Spacer(modifier = Modifier.height(32.dp))
             if (showDialog)
             {
-                CongratsDialog(onDismiss = {
+                CongratsDialog(
+                    onDismiss = {
                     showDialog = false
                     returnToCatalog()
                 })
@@ -122,7 +124,11 @@ fun SendRequest(viewModel: ViewModel, returnToCatalog: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CongratsDialog(onDismiss: () -> Unit) {
+fun CongratsDialog(title: String ="Congrats!",
+                   description: String="You earned 10 points",
+                   titleSize: TextUnit = 40.sp,
+                   descriptionSize: TextUnit = 27.sp,
+                   onDismiss: () -> Unit) {
     AlertDialog(
         modifier = Modifier
             .width(368.dp)
@@ -140,9 +146,9 @@ fun CongratsDialog(onDismiss: () -> Unit) {
     {
         Column {
             Text(
-                text = "Congrats!",
+                text = title,
                 style = TextStyle(
-                    fontSize = 40.sp,
+                    fontSize = titleSize,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     textAlign = TextAlign.Center,
@@ -152,9 +158,9 @@ fun CongratsDialog(onDismiss: () -> Unit) {
                     .padding(36.dp)
             )
             Text(
-                text = "You earned 10 points",
+                text = description,
                 style = TextStyle(
-                    fontSize = 27.sp,
+                    fontSize = descriptionSize,
                     fontWeight = FontWeight.Bold,
                     color = Color.White,
                     textAlign = TextAlign.Center,

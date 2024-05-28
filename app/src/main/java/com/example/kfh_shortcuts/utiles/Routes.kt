@@ -2,6 +2,7 @@ package com.example.kfh_shortcuts.utiles
 
 class Routes {
     companion object {
+        val ConfirmRoute = "ConfirmRoute"
         val RewardRoute = "RewardRoute"
         val HistoryRoute = "HistoryRoute"
         val SendRequestRoute = "SendRequest"

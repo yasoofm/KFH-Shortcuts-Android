@@ -1,12 +1,14 @@
-package com.example.kfh_shortcuts.composable
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -16,15 +18,19 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import com.example.kfh_shortcuts.composable.CongratsDialog
 
 @Composable
-fun RewardsScreen() {
+fun RewardsScreen(viewModel: ViewModel, returnToCatalog: () -> Unit) {
+    val showRedeemDialog = remember { mutableStateOf(false) }
+    val showRewardDialog = remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF8F8F8))
     ) {
-        TopBaaaar(name = "Nawaf Almutairi", id = "83320", points = "1000000")
+        TopBaaaar(name = "Nawaf Almutairi", id = "83320", points = "1000")
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Rewards",
@@ -33,16 +39,33 @@ fun RewardsScreen() {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
         )
-        RewardList()
+        RewardList { showRedeemDialog.value = true }
+        if (showRedeemDialog.value) {
+            RedeemDialog(
+                onConfirm = {
+                    showRedeemDialog.value = false
+                    showRewardDialog.value = true
+                            },
+                onDismiss = { showRedeemDialog.value = false }
+            )
+        }
+
+        if (showRewardDialog.value)
+        {
+            CongratsDialog( title = "Your request has \n" + "been submitted",
+                description = "The admin will contact you", titleSize = 30.sp, descriptionSize = 23.sp,
+                onDismiss = {
+                    showRewardDialog.value = false
+                })
+        }
     }
 }
-
 @Composable
 fun TopBaaaar(name: String, id: String, points: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp)
+            .height(240.dp)
             .graphicsLayer {
                 clip = true
                 shape = RoundedCornerShape(bottomStart = 29.dp, bottomEnd = 29.dp)
@@ -53,29 +76,20 @@ fun TopBaaaar(name: String, id: String, points: String) {
                     start = Offset.Zero,
                     end = Offset.Infinite
                 )
-            ),
+            )
+            .padding(20.dp),
         contentAlignment = Alignment.TopStart
     ) {
-        Column(
-            modifier = Modifier
-                .padding(16.dp)
-                .fillMaxHeight(),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.Start
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
+        Spacer(modifier = Modifier.height(600.dp))
                 Text(
                     text = "My box",
                     color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.align(Alignment.TopCenter)
                 )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Column {
+            Spacer(modifier = Modifier.height(9.dp))
+            Column(modifier = Modifier.align(Alignment.CenterStart)) {
                 Text(
                     text = "Welcome 👋",
                     color = Color.White,
@@ -95,9 +109,9 @@ fun TopBaaaar(name: String, id: String, points: String) {
                     fontWeight = FontWeight.Medium
                 )
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                modifier = Modifier.align(Alignment.BottomCenter)
             ) {
                 Text(
                     text = "total points",
@@ -111,27 +125,25 @@ fun TopBaaaar(name: String, id: String, points: String) {
                     fontSize = 48.sp,
                     fontWeight = FontWeight.Bold
                 )
-                Text(
-                    text = "points",
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium
-                )
+//                Text(
+//                    text = "points",
+//                    color = Color.White,
+//                    fontSize = 16.sp,
+//                    fontWeight = FontWeight.Medium
+//                )
             }
         }
     }
-}
-
 @Composable
-fun RewardList() {
+fun RewardList(onRewardClick: () -> Unit) {
     Column {
         repeat(3) {
             RewardItem(
                 title = "Day OFF",
                 points = "100 Points",
-                onClick = { /* Handle click */ }
+                onClick = onRewardClick
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(25.dp))
         }
     }
 }
@@ -140,10 +152,9 @@ fun RewardList() {
 fun RewardItem(title: String, points: String, onClick: () -> Unit) {
     Card(
         shape = RoundedCornerShape(8.dp),
-//        backgroundColor = Color.White,
-//        elevation = 4.dp,
         modifier = Modifier
             .fillMaxWidth()
+            .height(100.dp)
             .padding(horizontal = 16.dp)
             .clickable(onClick = onClick)
     ) {
@@ -170,99 +181,28 @@ fun RewardItem(title: String, points: String, onClick: () -> Unit) {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//package com.example.kfh_shortcuts.composable
-//
-//import androidx.compose.foundation.background
-//import androidx.compose.foundation.layout.Arrangement
-//import androidx.compose.foundation.layout.Box
-//import androidx.compose.foundation.layout.Column
-//import androidx.compose.foundation.layout.Spacer
-//import androidx.compose.foundation.layout.fillMaxSize
-//import androidx.compose.foundation.layout.fillMaxWidth
-//import androidx.compose.foundation.layout.height
-//import androidx.compose.foundation.layout.padding
-//import androidx.compose.foundation.shape.RoundedCornerShape
-//import androidx.compose.material3.Text
-//import androidx.compose.runtime.Composable
-//import androidx.compose.ui.Alignment
-//import androidx.compose.ui.Modifier
-//import androidx.compose.ui.geometry.Offset
-//import androidx.compose.ui.graphics.Brush
-//import androidx.compose.ui.graphics.Color
-//import androidx.compose.ui.graphics.graphicsLayer
-//import androidx.compose.ui.text.font.FontWeight
-//import androidx.compose.ui.unit.dp
-//import androidx.compose.ui.unit.sp
-//@Composable
-//fun RewardsScreen() {
-//    Column(
-//        modifier = Modifier
-//            .fillMaxSize()
-//            .background(Color(0xFFF8F8F8))
-//    ) {
-//        TopBaaaar(name = "Nawaf Almutairi", id = "83320")
-//        Spacer(modifier = Modifier.height(16.dp))
-//
-//    }
-//}
-//
-//@Composable
-//fun TopBaaaar(name: String, id: String) {
-//    Box(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .height(300.dp)
-//            .graphicsLayer {
-//                clip = true
-//                shape = RoundedCornerShape(bottomStart = 29.dp, bottomEnd = 29.dp)
-//            }
-//            .background(
-//                brush = Brush.linearGradient(
-//                    colors = listOf(Color(0xFF007A3D), Color(0xFF0D4228), Color(0xFF000000)),
-//                    start = Offset.Zero,
-//                    end = Offset.Infinite
-//                )
-//            ),
-//        contentAlignment = Alignment.TopStart
-//    ) {
-//        Column(
-//            modifier = Modifier.padding(16.dp),
-//            verticalArrangement = Arrangement.Center
-//        ) {
-//
-//            Spacer(modifier = Modifier.height(8.dp))
-//            Text(
-//                text = "Welcome 👋",
-//                color = Color.White,
-//                fontSize = 20.sp,
-//                fontWeight = FontWeight.Bold
-//            )
-//            Text(
-//                text = name,
-//                color = Color.White,
-//                fontSize = 18.sp,
-//                fontWeight = FontWeight.SemiBold
-//            )
-//            Text(
-//                text = id,
-//                color = Color.White,
-//                fontSize = 16.sp,
-//                fontWeight = FontWeight.Medium
-//            )
-//        }
-//    }
-//}
+@Composable
+fun RedeemDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text("Yes",
+                    color = Color.Black,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        },
+        text = {
+            Text(
+                text = "Do you want to redeem this reward?",
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium
+            )
+        },
+//        backgroundColor = Color.DarkGray,
+//        contentColor = Color.White,
+        shape = RoundedCornerShape(16.dp)
+    )
+}

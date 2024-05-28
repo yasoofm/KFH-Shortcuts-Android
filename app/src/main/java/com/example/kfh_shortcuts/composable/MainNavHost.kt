@@ -1,6 +1,7 @@
 package com.example.kfh_shortcuts.composable
 
 import HistoryScreen
+import RewardsScreen
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -48,7 +49,6 @@ fun MainNavHost(
         floatingActionButtonPosition = FabPosition.End,
         bottomBar = {
                 BottomNavBar(navController)
-
         }
     )
     {
@@ -74,11 +74,9 @@ fun MainNavHost(
                 HistoryScreen()
             }
             composable(Routes.RewardRoute) {
-                RewardsScreen()
+                RewardsScreen(viewModel, returnToCatalog = { navController.navigate(Routes.catalogRoute) })
             }
-
-
-
         }
     }
 }
+
