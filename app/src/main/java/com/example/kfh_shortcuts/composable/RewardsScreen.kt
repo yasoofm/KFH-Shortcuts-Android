@@ -201,6 +201,7 @@ fun RedeemDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
                 fontWeight = FontWeight.Medium
             )
         },
+
 //        backgroundColor = Color.DarkGray,
 //        contentColor = Color.White,
         shape = RoundedCornerShape(16.dp)
