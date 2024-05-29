@@ -32,6 +32,7 @@ fun MyNavHost(
         }
         composable(Routes.AppScreenRoute) {
             viewModel.fetchCategories()
+
             MainNavHost(
                 viewModel = viewModel,
                 navControllerOutter = navController
@@ -39,6 +40,7 @@ fun MyNavHost(
         }
         composable(Routes.chatbotRoute) {
             ChatBotScreen()
+
         }
     }
 }

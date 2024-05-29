@@ -28,7 +28,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.example.kfh_shortcuts.model.Categorey
-import com.example.kfh_shortcuts.model.Product
 import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -37,14 +36,14 @@ fun CatalogScreen(viewModel: ProductViewModel = viewModel(), openProductDetails:
     Column(
         modifier = Modifier
             .fillMaxSize()
-//            .background(Color(0xFFF5F5F5))
+
     ) {
         TopBar(
-            viewModel.categories,
-            viewModel.selectedCategoryName,
-            viewModel::fetchProductsByCategory
+            categories = viewModel.categories,
+            selectedCategoryName = viewModel.selectedCategoryName,
+            onCategorySelected = viewModel::fetchProductsByCategory
         )
-        Spacer(modifier = Modifier.height(8.dp))
+
         ProductSection(viewModel, openProductDetails)
     }
 }
@@ -141,15 +140,14 @@ fun ProductSection(
     openProductDetails: (String) -> Unit
 ) {
     LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
     ) {
         itemsIndexed(viewModel.productItems.chunked(2)) { _, rowItems ->
             Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
             ) {
                 rowItems.forEach { item ->
                     ProductItem(
@@ -178,51 +176,48 @@ fun ProductItem(
 ) {
     Box(
         modifier = modifier
+            .padding(8.dp)
             .clickable(onClick = onClick)
-            .fillMaxWidth()
     ) {
-        Box(
+        Column(
             modifier = Modifier
-                .shadow(4.dp, RoundedCornerShape(16.dp))
-                .background(Color.White, RoundedCornerShape(16.dp))
                 .fillMaxWidth()
-                .padding(top = 70.dp) // Adjust padding to move the content below the image
+                .padding(top = 40.dp)
+                .shadow(4.dp, RoundedCornerShape(8.dp))
+                .background(color = Color(0xFFF8F8F8), RoundedCornerShape(8.dp))
+                .padding(10.dp)
         ) {
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 8.dp, vertical = 8.dp)
-            ) {
-                Spacer(modifier = Modifier.height(70.dp)) // Spacer to create space for the image
-                Text(
-                    text = name,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black
-                    ),
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = description,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        color = Color(0xFF0D4228)
-                    ),
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis
-                )
-            }
+            Spacer(modifier = Modifier.height(48.dp))
+            Text(
+                text = name,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = Color.Black
+                ),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = description,
+                style = MaterialTheme.typography.bodyMedium.copy(
+                    color = Color(0xFF0D4228)
+                ),
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
         }
-
         AsyncImage(
             model = imageUrl,
             contentDescription = null,
             modifier = Modifier
-                .fillMaxWidth()
-                .height(140.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .align(Alignment.TopCenter),
-            contentScale = ContentScale.Crop
+                .size(200.dp)
+                .align(Alignment.TopCenter)
+                .offset(y = (-60).dp)
+                .clip(RoundedCornerShape(8.dp)),
+            contentScale = ContentScale.Fit
         )
     }
 }
+
+
