@@ -30,10 +30,20 @@ interface ProductAPIService {
         @Body request: ProductRequest
     ): Response<Void>
 
-    @POST(Constants.rewardRequestEndPoints) suspend fun  rewardRequest(
+    @POST(Constants.rewardRequestEndPoints)
+    suspend fun  rewardRequest(
         @Header(Constants.authorization) token: String?,
         @Body request: Reward
     ): Response<Void>
 
+    @GET(Constants.rewardEndPoint)
+    suspend fun getRewards(): List<Reward>
+
+    @POST(Constants.rewardRequestEndPoints)
+    suspend fun rewardRequest(
+        @Header(Constants.authorization) token: String?,
+        @Query("Id") id: Int
+
+    ): Response<Void>
 
 }
