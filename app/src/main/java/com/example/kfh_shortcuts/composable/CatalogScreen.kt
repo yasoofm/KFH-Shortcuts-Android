@@ -1,5 +1,5 @@
-
 package com.example.kfh_shortcuts.composable
+
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -136,7 +136,10 @@ fun CategoryChip(text: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-fun ProductSection(viewModel: ProductViewModel = viewModel(), openProductDetails: (String) -> Unit) {
+fun ProductSection(
+    viewModel: ProductViewModel = viewModel(),
+    openProductDetails: (String) -> Unit
+) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         modifier = Modifier
