@@ -1,5 +1,6 @@
 package com.example.kfh_shortcuts.composable
 
+import ChatBotScreen
 import HistoryScreen
 import RewardsScreen
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.kfh_shortcuts.utiles.Routes
@@ -27,6 +29,7 @@ import androidx.navigation.compose.composable
 
 @Composable
 fun MainNavHost(
+    navControllerOutter: NavController,
     modifier: Modifier = Modifier,
     viewModel: ProductViewModel = viewModel(),
     navController: NavHostController = rememberNavController()
@@ -36,7 +39,7 @@ fun MainNavHost(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate(Routes.chatbotRoute)
+                    navControllerOutter.navigate(Routes.chatbotRoute)
                 },
                 shape = CircleShape,
                 containerColor = Color(0xFF007A3D),
@@ -48,7 +51,7 @@ fun MainNavHost(
         },
         floatingActionButtonPosition = FabPosition.End,
         bottomBar = {
-                BottomNavBar(navController)
+            BottomNavBar(navController)
         }
     )
     {
@@ -58,9 +61,6 @@ fun MainNavHost(
             modifier = Modifier
                 .padding(it)
         ) {
-            composable(Routes.chatbotRoute) {
-                ChatBotScreen()
-            }
             composable(Routes.catalogRoute) {
                 CatalogScreen(
                     viewModel,
@@ -71,23 +71,23 @@ fun MainNavHost(
                     viewModel,
                     openRequestDetails = { navController.navigate(Routes.RequestProductRoute) })
             }
-
-
             composable(Routes.RequestProductRoute) {
                 SendRequest(
                     viewModel,
                     returnToCatalog = { navController.navigate(Routes.SendRequestRoute) })
             }
-
-
             composable(Routes.RequestProductRoute) {
-                SendRequest(viewModel, returnToCatalog = { navController.navigate(Routes.catalogRoute) })
+                SendRequest(
+                    viewModel,
+                    returnToCatalog = { navController.navigate(Routes.catalogRoute) })
             }
             composable(Routes.HistoryRoute) {
                 HistoryScreen()
             }
             composable(Routes.RewardRoute) {
-                RewardsScreen(viewModel, returnToCatalog = { navController.navigate(Routes.catalogRoute) })
+                RewardsScreen(
+                    viewModel,
+                    returnToCatalog = { navController.navigate(Routes.catalogRoute) })
             }
         }
     }
