@@ -1,6 +1,8 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
@@ -18,11 +20,13 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kfh_shortcuts.composable.CongratsDialog
+import com.example.kfh_shortcuts.model.response.Reward
+import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 
 @Composable
-fun RewardsScreen(viewModel: ViewModel, returnToCatalog: () -> Unit) {
+fun RewardsScreen(viewModel: ProductViewModel = viewModel(), returnToCatalog: () -> Unit) {
     val showRedeemDialog = remember { mutableStateOf(false) }
     val showRewardDialog = remember { mutableStateOf(false) }
     Column(
@@ -30,7 +34,9 @@ fun RewardsScreen(viewModel: ViewModel, returnToCatalog: () -> Unit) {
             .fillMaxSize()
             .background(Color(0xFFF8F8F8))
     ) {
-        TopBaaaar(name = "Haya Alshamlan", id = "83320", points = "1000")
+
+        TopBaaaar(name = viewModel.token!!.firstName, lastName = viewModel.token!!.lastName, id = viewModel.token!!.kfH_Id, points = "1000")
+
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Rewards",
@@ -39,7 +45,9 @@ fun RewardsScreen(viewModel: ViewModel, returnToCatalog: () -> Unit) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
         )
-        RewardList { showRedeemDialog.value = true }
+
+        RewardList(viewModel.rewards) { showRedeemDialog.value = true }
+
         if (showRedeemDialog.value) {
             RedeemDialog(
                 onConfirm = {
@@ -61,7 +69,7 @@ fun RewardsScreen(viewModel: ViewModel, returnToCatalog: () -> Unit) {
     }
 }
 @Composable
-fun TopBaaaar(name: String, id: String, points: String) {
+fun TopBaaaar(name: String,lastName:String, id: Int, points: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -103,7 +111,13 @@ fun TopBaaaar(name: String, id: String, points: String) {
                     fontWeight = FontWeight.SemiBold
                 )
                 Text(
-                    text = id,
+                    text = lastName,
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+                Text(
+                    text = id.toString(),
                     color = Color.White,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium
@@ -125,24 +139,18 @@ fun TopBaaaar(name: String, id: String, points: String) {
                     fontSize = 48.sp,
                     fontWeight = FontWeight.Bold
                 )
-//                Text(
-//                    text = "points",
-//                    color = Color.White,
-//                    fontSize = 16.sp,
-//                    fontWeight = FontWeight.Medium
-//                )
+
             }
         }
     }
 @Composable
-fun RewardList(onRewardClick: () -> Unit) {
-    Column {
-        repeat(3) {
-            RewardItem(
-                title = "Day OFF",
-                points = "100 Points",
-                onClick = onRewardClick
-            )
+fun RewardList(rewards: List<Reward>, onRewardClick: () -> Unit) {
+    LazyColumn {
+      items(rewards) { reward ->
+           RewardItem(
+           title = reward.title,
+           points = "${reward.requiredPoints} Points",
+               onClick = onRewardClick)
             Spacer(modifier = Modifier.height(25.dp))
         }
     }
@@ -203,8 +211,6 @@ fun RedeemDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
             )
         },
 
-//        backgroundColor = Color.DarkGray,
-//        contentColor = Color.White,
         shape = RoundedCornerShape(16.dp)
     )
 }

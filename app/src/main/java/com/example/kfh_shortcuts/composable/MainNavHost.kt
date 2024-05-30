@@ -3,13 +3,10 @@ package com.example.kfh_shortcuts.composable
 import ChatBotScreen
 import HistoryScreen
 import RewardsScreen
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -85,9 +82,9 @@ fun MainNavHost(
                 HistoryScreen()
             }
             composable(Routes.RewardRoute) {
-                RewardsScreen(
-                    viewModel,
-                    returnToCatalog = { navController.navigate(Routes.catalogRoute) })
+
+                RewardsScreen(viewModel, returnToCatalog={ navController.navigate(Routes.catalogRoute) })
+
             }
         }
     }

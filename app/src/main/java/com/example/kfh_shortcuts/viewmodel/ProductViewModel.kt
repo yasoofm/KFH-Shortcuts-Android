@@ -1,5 +1,6 @@
 package com.example.kfh_shortcuts.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import com.example.kfh_shortcuts.model.Categorey
 import com.example.kfh_shortcuts.model.Product
 import com.example.kfh_shortcuts.model.ProductRequest
+import com.example.kfh_shortcuts.model.response.Reward
 
 
 class ProductViewModel : ViewModel() {
@@ -22,7 +24,11 @@ class ProductViewModel : ViewModel() {
     var productItems: List<Product> by mutableStateOf(emptyList())
     var categories: List<Categorey> by mutableStateOf(emptyList())
         private set
+    var rewards: List<Reward> by mutableStateOf(emptyList())
+        private set
     var selectedCategoryName: String? by mutableStateOf(null)
+        private set
+    var selectedRewardName: String? by mutableStateOf(null)
         private set
     var isLoggedIn: Boolean by mutableStateOf(false)
 
@@ -69,7 +75,9 @@ class ProductViewModel : ViewModel() {
         selectedCategoryName = categoryName
         viewModelScope.launch {
             try {
-                val retrievedProductItems = apiService.getProductItem(categoryName)
+                val retrievedProductItems = apiService.getProductItem(
+                    categoryName
+                )
                 productItems = retrievedProductItems
             } catch (e: Exception) {
                 println("Error $e")
@@ -93,20 +101,32 @@ class ProductViewModel : ViewModel() {
         }
     }
 
-//    fun rewardRequest(requiredPoints: Int, id: Int) {
-//        viewModelScope.launch {
-//            try {
-//                if (selectedProduct != null)
-//                    apiService.rewardRequest(
-//                        token = token?.getBearerToken(),
-//                        rewardRequest(requiredPoints, selectedProduct!!.id))
-//
-//            } catch (e: Exception) {
-//                println("Error $e")
-//            }
-//        }
-//    }
+    fun fetchRewards() {
+        viewModelScope.launch {
+            try {
+                val retrievedRewards = apiService.getRewards()
+                Log.e("REWARDS", retrievedRewards.first().toString())
+                rewards = retrievedRewards
 
+            } catch (e: Exception) {
+                println("Error $e")
+
+            }
+        }
+    }
+
+    fun requestReward(id: Int) {
+        viewModelScope.launch {
+            try {
+                apiService.rewardRequest(
+                    token = token?.getBearerToken(), id
+                )
+
+            } catch (e: Exception) {
+                println("Error $e")
+            }
+        }
+    }
 
 }
 

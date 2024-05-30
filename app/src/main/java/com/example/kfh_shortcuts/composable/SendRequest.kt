@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kfh_shortcuts.R
+import com.example.kfh_shortcuts.model.Product
 import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 
 @Composable
@@ -27,6 +28,10 @@ fun SendRequest(viewModel: ProductViewModel, returnToCatalog: () -> Unit) {
     var showDialog by remember { mutableStateOf(false) }
     var clientName by remember { mutableStateOf("") }
     var clientNumber by remember { mutableStateOf("") }
+    var showNameAlert by remember { mutableStateOf(false) }
+    var showNumberAlert by remember { mutableStateOf(false) }
+    var awardedPoint = viewModel.selectedProduct?.awardedPoints
+
 
     Column(
         modifier = Modifier
@@ -65,12 +70,25 @@ fun SendRequest(viewModel: ProductViewModel, returnToCatalog: () -> Unit) {
             )
             OutlinedTextField(
                 value = clientName,
-                onValueChange = { clientName = it },
+                onValueChange = {
+                    clientName = it
+                    showNameAlert = clientName.isEmpty()
+                },
                 label = { Text("Enter Name") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
             )
+            if (showNameAlert) {
+                Text(
+                    text = "Client's Name cannot be empty",
+                    color = Color.Red,
+                    style = TextStyle(fontSize = 12.sp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 4.dp)
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Client's Mobile Number",
@@ -85,19 +103,35 @@ fun SendRequest(viewModel: ProductViewModel, returnToCatalog: () -> Unit) {
             )
             OutlinedTextField(
                 value = clientNumber,
-                onValueChange = { clientNumber = it },
+                onValueChange = {
+                    clientNumber = it
+                    showNumberAlert = clientNumber.isEmpty()
+                },
                 leadingIcon = { Text("+965") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
             )
+            if (showNumberAlert) {
+                Text(
+                    text = "Client's Mobile Number cannot be empty",
+                    color = Color.Red,
+                    style = TextStyle(fontSize = 12.sp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 4.dp)
+                )
+            }
             Spacer(modifier = Modifier.height(32.dp))
             Button(
                 onClick = {
-                    viewModel.productRequest(clientName, clientNumber)
-                    showDialog = true
+                    showNameAlert = clientName.isEmpty()
+                    showNumberAlert = clientNumber.isEmpty()
+                    if (!showNameAlert && !showNumberAlert) {
+                        viewModel.productRequest(clientName, clientNumber)
+                        showDialog = true
+                    }
                 },
-
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(90.dp)
@@ -116,8 +150,9 @@ fun SendRequest(viewModel: ProductViewModel, returnToCatalog: () -> Unit) {
             Spacer(modifier = Modifier.height(32.dp))
 
             if (showDialog) {
-                CongratsDialog(onDismiss = {
-
+                CongratsDialog(
+                    description = "You earned $awardedPoint Points",
+                    onDismiss = {
                     showDialog = false
                     returnToCatalog()
                 })
@@ -129,11 +164,11 @@ fun SendRequest(viewModel: ProductViewModel, returnToCatalog: () -> Unit) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CongratsDialog(
+    onDismiss: () -> Unit,
     title: String = "Congrats!",
     description: String = "You earned 10 points",
     titleSize: TextUnit = 40.sp,
-    descriptionSize: TextUnit = 27.sp,
-    onDismiss: () -> Unit
+    descriptionSize: TextUnit = 27.sp
 ) {
     AlertDialog(
         modifier = Modifier

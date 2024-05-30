@@ -1,6 +1,6 @@
 package com.example.kfh_shortcuts.model
 
-class Login (
+data class Login (
     var Email: String,
     var Password: String,
 )
