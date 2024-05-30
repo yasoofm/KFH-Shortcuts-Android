@@ -184,7 +184,7 @@ fun ProductItem(
                 .fillMaxWidth()
                 .padding(top = 40.dp)
                 .shadow(4.dp, RoundedCornerShape(8.dp))
-                .background(color = Color(0xFFF8F8F8), RoundedCornerShape(8.dp))
+                .background(color = Color(0xFF918F8F), RoundedCornerShape(8.dp))
                 .padding(10.dp)
         ) {
             Spacer(modifier = Modifier.height(48.dp))

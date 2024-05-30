@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import com.example.kfh_shortcuts.model.Categorey
 import com.example.kfh_shortcuts.model.Product
 import com.example.kfh_shortcuts.model.ProductRequest
+import com.example.kfh_shortcuts.model.RequestHistory
 import com.example.kfh_shortcuts.model.response.Reward
 
 
@@ -23,6 +24,9 @@ class ProductViewModel : ViewModel() {
     var token: TokenResponse? by mutableStateOf(null)
     var productItems: List<Product> by mutableStateOf(emptyList())
     var categories: List<Categorey> by mutableStateOf(emptyList())
+        private set
+
+    var history: List<RequestHistory> by mutableStateOf(emptyList())
         private set
     var rewards: List<Reward> by mutableStateOf(emptyList())
         private set
@@ -121,6 +125,21 @@ class ProductViewModel : ViewModel() {
                 apiService.rewardRequest(
                     token = token?.getBearerToken(), id
                 )
+
+            } catch (e: Exception) {
+                println("Error $e")
+            }
+        }
+    }
+
+
+    fun requestHistory() {
+        viewModelScope.launch {
+            try {
+
+                val retrievedHistory = apiService.getHistory()
+                history = retrievedHistory
+
 
             } catch (e: Exception) {
                 println("Error $e")

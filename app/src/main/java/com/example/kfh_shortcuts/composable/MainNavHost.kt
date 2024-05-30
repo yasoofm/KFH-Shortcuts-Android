@@ -79,7 +79,7 @@ fun MainNavHost(
                     returnToCatalog = { navController.navigate(Routes.catalogRoute) })
             }
             composable(Routes.HistoryRoute) {
-                HistoryScreen()
+                HistoryScreen(viewModel = viewModel)
             }
             composable(Routes.RewardRoute) {
 

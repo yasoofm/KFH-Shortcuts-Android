@@ -14,15 +14,18 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.kfh_shortcuts.viewmodel.ProductViewModel
+
 
 @Composable
-fun HistoryScreen() {
+fun HistoryScreen(viewModel: ProductViewModel = viewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF8F8F8))
     ) {
-        TopBaaaar(name = "Haya Alshamlan", id = "83320")
+        TopBaaaar(name = viewModel.token!!.firstName, lastName = viewModel.token!!.lastName, id = viewModel.token!!.kfH_Id, points = "1000")
         Spacer(modifier = Modifier.height(16.dp))
         HistoryList()
     }
@@ -133,4 +136,3 @@ fun HistoryItem() {
                 }
     }
 }
-
