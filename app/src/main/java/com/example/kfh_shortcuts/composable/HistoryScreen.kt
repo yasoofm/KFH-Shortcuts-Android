@@ -22,7 +22,7 @@ fun HistoryScreen() {
             .fillMaxSize()
             .background(Color(0xFFF8F8F8))
     ) {
-        TopBaaaar(name = "Nawaf Almutairi", id = "83320")
+        TopBaaaar(name = "Haya Alshamlan", id = "83320")
         Spacer(modifier = Modifier.height(16.dp))
         HistoryList()
     }
@@ -89,49 +89,48 @@ fun HistoryList() {
 fun HistoryItem() {
     Card(
         shape = RoundedCornerShape(8.dp),
-//        backgroundColor = Color.White,
-//        elevation = 4.dp,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 16.dp),
     ) {
         Row(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth(),
+
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(
-                    imageVector = Icons.Default.CloudDownload,
-                    contentDescription = null,
-                    modifier = Modifier.size(40.dp)
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                Column {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.CloudDownload,
+                            contentDescription = null,
+                            modifier = Modifier.size(40.dp)
+                        )
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Column {
+                            Text(
+                                text = "32 Jan 2023",
+                                color = Color.Gray,
+                                fontSize = 14.sp
+                            )
+                            Text(
+                                text = "Cards",
+                                color = Color.Black,
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
                     Text(
-                        text = "32 Jan 2023",
+                        text = "POINTS",
                         color = Color.Gray,
-                        fontSize = 14.sp
-                    )
-                    Text(
-                        text = "Cards",
-                        color = Color.Black,
-                        fontSize = 16.sp,
+                        fontSize = 14.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
-            }
-            Text(
-                text = "POINTS",
-                color = Color.Gray,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
     }
 }
 

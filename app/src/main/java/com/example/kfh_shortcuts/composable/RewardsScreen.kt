@@ -34,7 +34,9 @@ fun RewardsScreen(viewModel: ProductViewModel = viewModel(), returnToCatalog: ()
             .fillMaxSize()
             .background(Color(0xFFF8F8F8))
     ) {
+
         TopBaaaar(name = viewModel.token!!.firstName, lastName = viewModel.token!!.lastName, id = viewModel.token!!.kfH_Id, points = "1000")
+
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = "Rewards",
@@ -163,6 +165,7 @@ fun RewardItem(title: String, points: String, onClick: () -> Unit) {
             .height(100.dp)
             .padding(horizontal = 16.dp)
             .clickable(onClick = onClick)
+            .background(Color(0xFFF8F8F8)),
     ) {
         Row(
             modifier = Modifier
