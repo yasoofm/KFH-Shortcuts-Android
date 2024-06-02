@@ -4,7 +4,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudDownload
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -14,20 +14,30 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.kfh_shortcuts.model.RequestHistory
 import com.example.kfh_shortcuts.viewmodel.ProductViewModel
-
+import kotlinx.coroutines.launch
 
 @Composable
 fun HistoryScreen(viewModel: ProductViewModel = viewModel()) {
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF8F8F8))
     ) {
-        TopBarH(name = viewModel.token!!.firstName, lastName = viewModel.token!!.lastName, id = viewModel.token!!.kfH_Id, points = "1000")
+        TopBarH(
+            name = viewModel.token!!.firstName,
+            lastName = viewModel.token!!.lastName,
+            id = viewModel.token!!.kfH_Id,
+            points = "1000"
+        )
         Spacer(modifier = Modifier.height(16.dp))
-        HistoryList()
+        HistoryList(viewModel.history)
     }
 }
 
@@ -51,9 +61,6 @@ fun TopBarH(name: String, lastName: String, id: Int, points: String) {
             .padding(20.dp),
         contentAlignment = Alignment.TopStart
     ) {
-
-
-//        Spacer(modifier = Modifier.height(9.dp))
         Column(modifier = Modifier.align(Alignment.CenterStart)) {
             Text(
                 text = "Welcome 👋",
@@ -93,18 +100,19 @@ fun TopBarH(name: String, lastName: String, id: Int, points: String) {
         }
     }
 }
+
 @Composable
-fun HistoryList() {
+fun HistoryList(history: List<RequestHistory>) {
     Column {
-        repeat(5) {
-            HistoryItem()
+        history.forEach { item ->
+            HistoryItem(productName = item.productName, points = item.points)
             Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
 
 @Composable
-fun HistoryItem() {
+fun HistoryItem(productName: String, points: Int) {
     Card(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
@@ -115,41 +123,33 @@ fun HistoryItem() {
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth(),
-
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.CloudDownload,
-                            contentDescription = null,
-                            modifier = Modifier.size(40.dp)
-                        )
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Column {
-                            Text(
-                                text = "32 Jan 2023",
-                                color = Color.Gray,
-                                fontSize = 14.sp
-                            )
-                            Text(
-                                text = "Cards",
-                                color = Color.Black,
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                    }
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.CloudDownload,
+                    contentDescription = null,
+                    modifier = Modifier.size(40.dp)
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Column {
                     Text(
-                        text = "POINTS",
-                        color = Color.Gray,
-                        fontSize = 14.sp,
+                        text = productName,
+                        color = Color.Black,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
+            }
+            Text(
+                text = points.toString(),
+                color = Color.Gray,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }
-
-

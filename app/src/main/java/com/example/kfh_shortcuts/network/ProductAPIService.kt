@@ -43,5 +43,7 @@ interface ProductAPIService {
 
 
     @GET(Constants.RequestHistoryEndPoint)
-    suspend fun getHistory(): List<RequestHistory>
+    suspend fun getHistory(
+        @Header(Constants.authorization) token: String?,
+    ): Response<List<RequestHistory>>
 }

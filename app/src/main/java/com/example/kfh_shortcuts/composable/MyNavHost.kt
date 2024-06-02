@@ -33,6 +33,7 @@ fun MyNavHost(
         composable(Routes.AppScreenRoute) {
             viewModel.fetchCategories()
             viewModel.fetchRewards()
+            viewModel.requestHistory()
             MainNavHost(viewModel = viewModel, navControllerOutter = navController )
 
 
