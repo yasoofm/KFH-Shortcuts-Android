@@ -1,6 +1,6 @@
 package com.example.kfh_shortcuts.composable
 
-import ChatBotScreen
+
 import HistoryScreen
 import RewardsScreen
 import androidx.compose.foundation.layout.padding
@@ -79,7 +79,7 @@ fun MainNavHost(
                     returnToCatalog = { navController.navigate(Routes.catalogRoute) })
             }
             composable(Routes.HistoryRoute) {
-                HistoryScreen()
+                HistoryScreen(viewModel = viewModel)
             }
             composable(Routes.RewardRoute) {
 

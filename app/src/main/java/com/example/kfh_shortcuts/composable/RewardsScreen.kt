@@ -24,18 +24,26 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kfh_shortcuts.composable.CongratsDialog
 import com.example.kfh_shortcuts.model.response.Reward
 import com.example.kfh_shortcuts.viewmodel.ProductViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 @Composable
 fun RewardsScreen(viewModel: ProductViewModel = viewModel(), returnToCatalog: () -> Unit) {
     val showRedeemDialog = remember { mutableStateOf(false) }
     val showRewardDialog = remember { mutableStateOf(false) }
+    val selectedRewardId = remember { mutableStateOf<Int?>(null) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF8F8F8))
     ) {
-
-        TopBaaaar(name = viewModel.token!!.firstName, lastName = viewModel.token!!.lastName, id = viewModel.token!!.kfH_Id, points = "1000")
+        TopBar(
+            name = viewModel.token!!.firstName,
+            lastName = viewModel.token!!.lastName,
+            id = viewModel.token!!.kfH_Id,
+            points = "1000"
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -46,30 +54,38 @@ fun RewardsScreen(viewModel: ProductViewModel = viewModel(), returnToCatalog: ()
             modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
         )
 
-        RewardList(viewModel.rewards) { showRedeemDialog.value = true }
+        RewardList(viewModel.rewards) { rewardId ->
+            selectedRewardId.value = rewardId
+            showRedeemDialog.value = true
+        }
 
         if (showRedeemDialog.value) {
             RedeemDialog(
                 onConfirm = {
                     showRedeemDialog.value = false
+                    selectedRewardId.value?.let { viewModel.requestReward(it) }
                     showRewardDialog.value = true
-                            },
+                },
                 onDismiss = { showRedeemDialog.value = false }
             )
         }
 
-        if (showRewardDialog.value)
-        {
-            CongratsDialog( title = "Your request has \n" + "been submitted",
-                description = "The admin will contact you", titleSize = 30.sp, descriptionSize = 23.sp,
+        if (showRewardDialog.value) {
+            CongratsDialog(
+                title = "Your request has \nbeen submitted",
+                description = "The admin will contact you",
+                titleSize = 30.sp,
+                descriptionSize = 23.sp,
                 onDismiss = {
                     showRewardDialog.value = false
-                })
+                }
+            )
         }
     }
 }
+
 @Composable
-fun TopBaaaar(name: String,lastName:String, id: Int, points: String) {
+fun TopBar(name: String, lastName: String, id: Int, points: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -89,83 +105,79 @@ fun TopBaaaar(name: String,lastName:String, id: Int, points: String) {
         contentAlignment = Alignment.TopStart
     ) {
         Spacer(modifier = Modifier.height(600.dp))
-                Text(
-                    text = "My box",
-                    color = Color.White,
-                    fontSize = 25.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.align(Alignment.TopCenter)
-                )
-            Spacer(modifier = Modifier.height(9.dp))
-            Column(modifier = Modifier.align(Alignment.CenterStart)) {
-                Text(
-                    text = "Welcome 👋",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = name,
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    text = lastName,
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    text = id.toString(),
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium
-                )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-            Column(
-                modifier = Modifier.align(Alignment.BottomCenter)
-            ) {
-                Text(
-                    text = "total points",
-                    color = Color.White,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
-                Text(
-                    text = points,
-                    color = Color.White,
-                    fontSize = 48.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-            }
+        Text(
+            text = "My Box",
+            color = Color.White,
+            fontSize = 25.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.align(Alignment.TopCenter)
+        )
+        Spacer(modifier = Modifier.height(9.dp))
+        Column(modifier = Modifier.align(Alignment.CenterStart)) {
+            Text(
+                text = "Welcome 👋",
+                color = Color.White,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "$name $lastName",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = id.toString(),
+                color = Color.White,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium
+            )
         }
-    }
-@Composable
-fun RewardList(rewards: List<Reward>, onRewardClick: () -> Unit) {
-    LazyColumn {
-      items(rewards) { reward ->
-           RewardItem(
-           title = reward.title,
-           points = "${reward.requiredPoints} Points",
-               onClick = onRewardClick)
-            Spacer(modifier = Modifier.height(25.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+        Column(
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) {
+            Text(
+                text = "Total Points",
+                color = Color.White,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = points,
+                color = Color.White,
+                fontSize = 48.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
 
 @Composable
-fun RewardItem(title: String, points: String, onClick: () -> Unit) {
+fun RewardList(rewards: List<Reward>, onRewardClick: (Int) -> Unit) {
+    LazyColumn {
+        items(rewards) { reward ->
+            RewardItem(
+                title = reward.title,
+                points = "${reward.requiredPoints} Points",
+                dueDate = reward.dueDate
+            ) { onRewardClick(reward.id) }
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+    }
+}
+
+@Composable
+fun RewardItem(title: String, points: String, dueDate: Date, onClick: () -> Unit) {
+    val formattedDate = formatDueDate(dueDate)
     Card(
-        shape = RoundedCornerShape(8.dp),
+        shape = RoundedCornerShape(12.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .height(100.dp)
+            .height(120.dp)
             .padding(horizontal = 16.dp)
             .clickable(onClick = onClick)
-            .background(Color(0xFFF8F8F8)),
+            .background(Color.White)
     ) {
         Row(
             modifier = Modifier
@@ -174,12 +186,20 @@ fun RewardItem(title: String, points: String, onClick: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(
-                text = title,
-                color = Color.Black,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Column {
+                Text(
+                    text = title,
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = "Due: $formattedDate",
+                    color = Color.Gray,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            }
             Text(
                 text = points,
                 color = Color.Gray,
@@ -190,14 +210,34 @@ fun RewardItem(title: String, points: String, onClick: () -> Unit) {
     }
 }
 
+fun formatDueDate(dueDate: Date): String {
+    return try {
+        val dayYearFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        dayYearFormat.format(dueDate)
+    } catch (e: Exception) {
+        dueDate.toString()
+    }
+}
+
 @Composable
 fun RedeemDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = onConfirm) {
-                Text("Yes",
+                Text(
+                    text = "Yes",
                     color = Color.Black,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(
+                    text = "No",
+                    color = Color.Gray,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -210,7 +250,7 @@ fun RedeemDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
                 fontWeight = FontWeight.Medium
             )
         },
-
         shape = RoundedCornerShape(16.dp)
     )
 }
+

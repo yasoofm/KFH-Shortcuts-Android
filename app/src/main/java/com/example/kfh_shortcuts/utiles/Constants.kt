@@ -9,9 +9,13 @@ class Constants {
         const val productRequestEndPoint = "User/CreateProductRequest"
         const val rewardRequestEndPoints = "User/RewardRequest"
         const val rewardEndPoint = "User/GetReward"
+        const val pointsEndPoint = "User/Points"
         const val authorization = "Authorization"
+        const val RequestHistoryEndPoint = " User/RequestHistory"
 
-        //Post User/RewardRequest
-        //GET User/GetReward
+
+        //GET User/Points
+        //GET User/RequestHistory (product mame - points )
+
     }
 }

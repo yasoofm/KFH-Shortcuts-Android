@@ -4,6 +4,7 @@ import com.example.kfh_shortcuts.model.Categorey
 import com.example.kfh_shortcuts.model.Login
 import com.example.kfh_shortcuts.model.Product
 import com.example.kfh_shortcuts.model.ProductRequest
+import com.example.kfh_shortcuts.model.RequestHistory
 import com.example.kfh_shortcuts.model.response.Reward
 import com.example.kfh_shortcuts.model.response.TokenResponse
 import com.example.kfh_shortcuts.utiles.Constants
@@ -30,12 +31,6 @@ interface ProductAPIService {
         @Body request: ProductRequest
     ): Response<Void>
 
-    @POST(Constants.rewardRequestEndPoints)
-    suspend fun  rewardRequest(
-        @Header(Constants.authorization) token: String?,
-        @Body request: Reward
-    ): Response<Void>
-
     @GET(Constants.rewardEndPoint)
     suspend fun getRewards(): List<Reward>
 
@@ -46,4 +41,7 @@ interface ProductAPIService {
 
     ): Response<Void>
 
+
+    @GET(Constants.RequestHistoryEndPoint)
+    suspend fun getHistory(): List<RequestHistory>
 }
