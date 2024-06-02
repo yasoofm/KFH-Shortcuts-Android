@@ -1,11 +1,13 @@
 package com.example.kfh_shortcuts.network
 
+import android.graphics.Point
 import com.example.kfh_shortcuts.model.Categorey
 import com.example.kfh_shortcuts.model.Login
 import com.example.kfh_shortcuts.model.Product
 import com.example.kfh_shortcuts.model.ProductRequest
 import com.example.kfh_shortcuts.model.RequestHistory
 import com.example.kfh_shortcuts.model.response.Reward
+import com.example.kfh_shortcuts.model.response.RewardPoints
 import com.example.kfh_shortcuts.model.response.TokenResponse
 import com.example.kfh_shortcuts.utiles.Constants
 import retrofit2.Response
@@ -46,4 +48,9 @@ interface ProductAPIService {
     suspend fun getHistory(
         @Header(Constants.authorization) token: String?,
     ): Response<List<RequestHistory>>
+
+    @GET(Constants.pointsEndPoint)
+    suspend fun getPoints(
+        @Header(Constants.authorization) token: String?,
+    ): Response<RewardPoints>
 }

@@ -34,6 +34,7 @@ fun MyNavHost(
             viewModel.fetchCategories()
             viewModel.fetchRewards()
             viewModel.requestHistory()
+            viewModel.points()
             MainNavHost(viewModel = viewModel, navControllerOutter = navController )
 
 

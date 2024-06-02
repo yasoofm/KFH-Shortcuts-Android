@@ -16,6 +16,7 @@ import com.example.kfh_shortcuts.model.Product
 import com.example.kfh_shortcuts.model.ProductRequest
 import com.example.kfh_shortcuts.model.RequestHistory
 import com.example.kfh_shortcuts.model.response.Reward
+import com.example.kfh_shortcuts.model.response.RewardPoints
 
 
 class ProductViewModel : ViewModel() {
@@ -28,6 +29,9 @@ class ProductViewModel : ViewModel() {
 
     var history: List<RequestHistory> by mutableStateOf(emptyList())
         private set
+
+    var earnedPoint: RewardPoints? by mutableStateOf(null)
+
     var rewards: List<Reward> by mutableStateOf(emptyList())
         private set
     var selectedCategoryName: String? by mutableStateOf(null)
@@ -142,7 +146,21 @@ class ProductViewModel : ViewModel() {
                 )
                 history = retrievedHistory.body()!!
 
-                println("History retrieved: $retrievedHistory")
+
+            } catch (e: Exception) {
+                println("Error $e")
+            }
+        }
+    }
+
+    fun points() {
+        viewModelScope.launch {
+            try {
+
+                val retrievedPoints = apiService.getPoints(
+                    token = token?.getBearerToken()
+                )
+                earnedPoint = retrievedPoints.body()!!
 
 
             } catch (e: Exception) {

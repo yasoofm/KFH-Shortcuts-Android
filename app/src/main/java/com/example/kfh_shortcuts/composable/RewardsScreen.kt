@@ -1,19 +1,16 @@
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Card
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -42,7 +39,7 @@ fun RewardsScreen(viewModel: ProductViewModel = viewModel(), returnToCatalog: ()
             name = viewModel.token!!.firstName,
             lastName = viewModel.token!!.lastName,
             id = viewModel.token!!.kfH_Id,
-            points = "1000"
+            points = viewModel.earnedPoint!!.points
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -85,7 +82,7 @@ fun RewardsScreen(viewModel: ProductViewModel = viewModel(), returnToCatalog: ()
 }
 
 @Composable
-fun TopBar(name: String, lastName: String, id: Int, points: String) {
+fun TopBar(name: String, lastName: String, id: Int, points: Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -97,14 +94,12 @@ fun TopBar(name: String, lastName: String, id: Int, points: String) {
             .background(
                 brush = Brush.linearGradient(
                     colors = listOf(Color(0xFF007A3D), Color(0xFF0D4228), Color(0xFF000000)),
-                    start = Offset.Zero,
-                    end = Offset.Infinite
+
                 )
             )
             .padding(20.dp),
         contentAlignment = Alignment.TopStart
     ) {
-        Spacer(modifier = Modifier.height(600.dp))
         Text(
             text = "My Box",
             color = Color.White,
@@ -112,7 +107,7 @@ fun TopBar(name: String, lastName: String, id: Int, points: String) {
             fontWeight = FontWeight.Bold,
             modifier = Modifier.align(Alignment.TopCenter)
         )
-        Spacer(modifier = Modifier.height(9.dp))
+
         Column(modifier = Modifier.align(Alignment.CenterStart)) {
             Text(
                 text = "Welcome 👋",
@@ -133,7 +128,7 @@ fun TopBar(name: String, lastName: String, id: Int, points: String) {
                 fontWeight = FontWeight.Medium
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(30.dp))
         Column(
             modifier = Modifier.align(Alignment.BottomCenter)
         ) {
@@ -144,7 +139,7 @@ fun TopBar(name: String, lastName: String, id: Int, points: String) {
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = points,
+                text = points.toString(),
                 color = Color.White,
                 fontSize = 48.sp,
                 fontWeight = FontWeight.Bold
@@ -253,4 +248,3 @@ fun RedeemDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
         shape = RoundedCornerShape(16.dp)
     )
 }
-
