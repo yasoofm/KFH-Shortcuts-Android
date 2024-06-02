@@ -1,6 +1,6 @@
 package com.example.kfh_shortcuts.composable
 
-import ChatBotScreen
+
 import HistoryScreen
 import RewardsScreen
 import androidx.compose.foundation.layout.padding

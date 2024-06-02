@@ -1,4 +1,3 @@
-
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -39,8 +38,12 @@ fun RewardsScreen(viewModel: ProductViewModel = viewModel(), returnToCatalog: ()
             .fillMaxSize()
             .background(Color(0xFFF8F8F8))
     ) {
-
-        TopBaaaar(name = viewModel.token!!.firstName, lastName = viewModel.token!!.lastName, id = viewModel.token!!.kfH_Id, points = "1000")
+        TopBar(
+            name = viewModel.token!!.firstName,
+            lastName = viewModel.token!!.lastName,
+            id = viewModel.token!!.kfH_Id,
+            points = "1000"
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -82,7 +85,7 @@ fun RewardsScreen(viewModel: ProductViewModel = viewModel(), returnToCatalog: ()
 }
 
 @Composable
-fun TopBaaaar(name: String, lastName: String, id: Int, points: String) {
+fun TopBar(name: String, lastName: String, id: Int, points: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -103,7 +106,7 @@ fun TopBaaaar(name: String, lastName: String, id: Int, points: String) {
     ) {
         Spacer(modifier = Modifier.height(600.dp))
         Text(
-            text = "My box",
+            text = "My Box",
             color = Color.White,
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
@@ -209,7 +212,7 @@ fun RewardItem(title: String, points: String, dueDate: Date, onClick: () -> Unit
 
 fun formatDueDate(dueDate: Date): String {
     return try {
-        val dayYearFormat = SimpleDateFormat("dd, yyyy", Locale.getDefault())
+        val dayYearFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
         dayYearFormat.format(dueDate)
     } catch (e: Exception) {
         dueDate.toString()
@@ -250,3 +253,4 @@ fun RedeemDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
         shape = RoundedCornerShape(16.dp)
     )
 }
+

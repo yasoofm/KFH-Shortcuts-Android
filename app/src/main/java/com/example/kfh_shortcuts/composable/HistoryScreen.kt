@@ -25,18 +25,18 @@ fun HistoryScreen(viewModel: ProductViewModel = viewModel()) {
             .fillMaxSize()
             .background(Color(0xFFF8F8F8))
     ) {
-        TopBaaaar(name = viewModel.token!!.firstName, lastName = viewModel.token!!.lastName, id = viewModel.token!!.kfH_Id, points = "1000")
+        TopBarH(name = viewModel.token!!.firstName, lastName = viewModel.token!!.lastName, id = viewModel.token!!.kfH_Id, points = "1000")
         Spacer(modifier = Modifier.height(16.dp))
         HistoryList()
     }
 }
 
 @Composable
-fun TopBaaaar(name: String, id: String) {
+fun TopBarH(name: String, lastName: String, id: Int, points: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(140.dp)
+            .height(240.dp)
             .graphicsLayer {
                 clip = true
                 shape = RoundedCornerShape(bottomStart = 29.dp, bottomEnd = 29.dp)
@@ -47,15 +47,14 @@ fun TopBaaaar(name: String, id: String) {
                     start = Offset.Zero,
                     end = Offset.Infinite
                 )
-            ),
+            )
+            .padding(20.dp),
         contentAlignment = Alignment.TopStart
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.Center
-        ) {
 
-            Spacer(modifier = Modifier.height(8.dp))
+
+//        Spacer(modifier = Modifier.height(9.dp))
+        Column(modifier = Modifier.align(Alignment.CenterStart)) {
             Text(
                 text = "Welcome 👋",
                 color = Color.White,
@@ -63,21 +62,37 @@ fun TopBaaaar(name: String, id: String) {
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = name,
+                text = "$name $lastName",
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = id,
+                text = id.toString(),
                 color = Color.White,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium
             )
         }
+        Spacer(modifier = Modifier.height(16.dp))
+        Column(
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) {
+            Text(
+                text = "Total Points",
+                color = Color.White,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold
+            )
+            Text(
+                text = points,
+                color = Color.White,
+                fontSize = 48.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
     }
 }
-
 @Composable
 fun HistoryList() {
     Column {
@@ -136,3 +151,5 @@ fun HistoryItem() {
                 }
     }
 }
+
+
