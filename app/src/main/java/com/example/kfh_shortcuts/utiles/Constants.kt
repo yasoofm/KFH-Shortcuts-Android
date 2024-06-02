@@ -15,7 +15,7 @@ class Constants {
 
 
         //GET User/Points
-        //GET User/RequestHistory (product mame - points )
+        //POST User/Chatbot @Query String
 
     }
 }

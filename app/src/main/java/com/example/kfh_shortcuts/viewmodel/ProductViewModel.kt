@@ -137,8 +137,12 @@ class ProductViewModel : ViewModel() {
         viewModelScope.launch {
             try {
 
-                val retrievedHistory = apiService.getHistory()
-                history = retrievedHistory
+                val retrievedHistory = apiService.getHistory(
+                    token = token?.getBearerToken()
+                )
+                history = retrievedHistory.body()!!
+
+                println("History retrieved: $retrievedHistory")
 
 
             } catch (e: Exception) {
