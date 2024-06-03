@@ -23,21 +23,25 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kfh_shortcuts.R
+import com.example.kfh_shortcuts.model.ChatbotRequest
+import com.example.kfh_shortcuts.model.response.ChatbotResponse
+import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 
 @Composable
-fun ChatBotScreen() {
+fun ChatBotScreen(viewModel: ProductViewModel) {
     var text by remember { mutableStateOf("") }
-    val messages = remember { mutableStateListOf<Pair<Boolean, String>>() } // Pair: isUser, message
-    messages.add(0, Pair(true, "Hello"))
-    messages.add(1, Pair(false, "How can I help you?"))
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFFF8F8F8))
     ) {
-        TopBar(name = "Haya Alshamlan", id = "83320")
+        TopBar(
+            name = viewModel.token!!.firstName,
+            lastName = viewModel.token!!.lastName,
+            id = viewModel.token!!.kfH_Id,        )
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn(
             modifier = Modifier
@@ -45,11 +49,11 @@ fun ChatBotScreen() {
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(messages) { message ->
-                if (message.first) {
-                    MessageBubbleUser(message.second)
+            items(viewModel.messages) { message ->
+                if (message.role == "user") {
+                    MessageBubbleUser(message.message)
                 } else {
-                    MessageBubbleBot(message.second)
+                    MessageBubbleBot(message.message)
                 }
             }
         }
@@ -57,18 +61,14 @@ fun ChatBotScreen() {
         BottomInputField(
             text = text,
             onTextChange = { text = it },
-            onSendClick = {
-                if (text.isNotBlank()) {
-                    messages.add(Pair(true, text))
-                    text = ""
-                }
-            }
+            viewModel = viewModel
+
         )
     }
 }
 
 @Composable
-fun TopBar(name: String, id: String) {
+fun TopBar(name: String,lastName: String, id: Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -102,7 +102,7 @@ fun TopBar(name: String, id: String) {
                 fontWeight = FontWeight.SemiBold
             )
             Text(
-                text = id,
+                text = id.toString(),
                 color = Color.White,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium
@@ -142,10 +142,11 @@ fun ScrollableRow(items: List<String>) {
 
 @Composable
 fun BottomInputField(
+    viewModel: ProductViewModel,
     text: String,
     onTextChange: (String) -> Unit,
-    onSendClick: () -> Unit
-) {
+
+    ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -164,7 +165,10 @@ fun BottomInputField(
         )
         Spacer(modifier = Modifier.width(8.dp))
         Button(
-            onClick = onSendClick,
+            onClick = {
+                viewModel.messages.add(ChatbotResponse(text, "user"))
+                viewModel.chat(request = ChatbotRequest(text))
+                      },
             modifier = Modifier
                 .size(35.dp),
             contentPadding = PaddingValues(0.dp)

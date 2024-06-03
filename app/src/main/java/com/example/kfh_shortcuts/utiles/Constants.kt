@@ -12,9 +12,10 @@ class Constants {
         const val pointsEndPoint = "User/Points"
         const val authorization = "Authorization"
         const val RequestHistoryEndPoint = " User/RequestHistory"
+        const val chatbotEndPoint = " User/Chatbot"
 
 
-        //GET User/Points
+
         //POST User/Chatbot @Query String
 
     }

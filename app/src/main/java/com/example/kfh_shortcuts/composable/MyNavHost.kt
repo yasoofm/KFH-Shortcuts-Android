@@ -35,7 +35,7 @@ fun MyNavHost(
             viewModel.fetchRewards()
             viewModel.requestHistory()
             viewModel.points()
-            MainNavHost(viewModel = viewModel, navControllerOutter = navController )
+            MainNavHost(viewModel = viewModel, navControllerOutter = navController)
 
 
             MainNavHost(
@@ -44,7 +44,7 @@ fun MyNavHost(
             )
         }
         composable(Routes.chatbotRoute) {
-            ChatBotScreen()
+            ChatBotScreen(viewModel = viewModel)
 
         }
     }
