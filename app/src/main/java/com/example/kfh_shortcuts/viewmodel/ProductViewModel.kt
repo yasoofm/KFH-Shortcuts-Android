@@ -12,9 +12,11 @@ import com.example.kfh_shortcuts.network.RetrofitHelper
 import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModel
 import com.example.kfh_shortcuts.model.Categorey
+import com.example.kfh_shortcuts.model.ChatbotRequest
 import com.example.kfh_shortcuts.model.Product
 import com.example.kfh_shortcuts.model.ProductRequest
 import com.example.kfh_shortcuts.model.RequestHistory
+import com.example.kfh_shortcuts.model.response.ChatbotResponse
 import com.example.kfh_shortcuts.model.response.Reward
 import com.example.kfh_shortcuts.model.response.RewardPoints
 
@@ -43,6 +45,7 @@ class ProductViewModel : ViewModel() {
     var selectedProduct: Product? by mutableStateOf(null)
     var showValidationError: Boolean by mutableStateOf(true)
 
+   var messages: ArrayList<ChatbotResponse> by mutableStateOf(ArrayList())
 
     fun login(username: String, password: String) {
         viewModelScope.launch {
@@ -66,7 +69,9 @@ class ProductViewModel : ViewModel() {
     fun fetchCategories() {
         viewModelScope.launch {
             try {
-                val retrievedCategories = apiService.getCategory()
+                val retrievedCategories = apiService.getCategory(
+                    token = token?.getBearerToken()
+                )
                 categories = retrievedCategories
                 val defaultCategorey = retrievedCategories.find { it.name == "Cards" }
                 if (defaultCategorey != null) {
@@ -84,6 +89,7 @@ class ProductViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 val retrievedProductItems = apiService.getProductItem(
+                    token = token?.getBearerToken(),
                     categoryName
                 )
                 productItems = retrievedProductItems
@@ -97,11 +103,15 @@ class ProductViewModel : ViewModel() {
     fun productRequest(clientName: String, clientNumber: String) {
         viewModelScope.launch {
             try {
-                if (selectedProduct != null)
-                    apiService.productRequest(
+                if (selectedProduct != null) {
+                    val response = apiService.productRequest(
                         token = token?.getBearerToken(),
                         ProductRequest(clientName, clientNumber, selectedProduct!!.id)
                     )
+                    if(response.isSuccessful){
+                        points()
+                    }
+                }
 
             } catch (e: Exception) {
                 println("Error $e")
@@ -112,7 +122,9 @@ class ProductViewModel : ViewModel() {
     fun fetchRewards() {
         viewModelScope.launch {
             try {
-                val retrievedRewards = apiService.getRewards()
+                val retrievedRewards = apiService.getRewards(
+                    token = token?.getBearerToken()
+                )
                 Log.e("REWARDS", retrievedRewards.first().toString())
                 rewards = retrievedRewards
 
@@ -126,10 +138,12 @@ class ProductViewModel : ViewModel() {
     fun requestReward(id: Int) {
         viewModelScope.launch {
             try {
-                apiService.rewardRequest(
+                val response = apiService.rewardRequest(
                     token = token?.getBearerToken(), id
                 )
-
+                if(response.isSuccessful){
+                    points()
+                }
             } catch (e: Exception) {
                 println("Error $e")
             }
@@ -161,6 +175,26 @@ class ProductViewModel : ViewModel() {
                     token = token?.getBearerToken()
                 )
                 earnedPoint = retrievedPoints.body()!!
+
+
+            } catch (e: Exception) {
+                println("Error $e")
+            }
+        }
+    }
+
+
+    fun chat(request: ChatbotRequest) {
+        viewModelScope.launch {
+            try {
+
+                val response = apiService.chatbotmsg(
+                    token = token?.getBearerToken(),
+                    request
+                )
+                if (response.isSuccessful){
+                    response.body()?.let { messages.add(it) }
+                }
 
 
             } catch (e: Exception) {
