@@ -45,7 +45,7 @@ class ProductViewModel : ViewModel() {
     var selectedProduct: Product? by mutableStateOf(null)
     var showValidationError: Boolean by mutableStateOf(true)
 
-   var messages: ArrayList<ChatbotResponse> by mutableStateOf(ArrayList())
+    var messages by mutableStateOf<List<ChatbotResponse>>(emptyList())
 
     fun login(username: String, password: String) {
         viewModelScope.launch {
@@ -187,16 +187,16 @@ class ProductViewModel : ViewModel() {
     fun chat(request: ChatbotRequest) {
         viewModelScope.launch {
             try {
-
                 val response = apiService.chatbotmsg(
                     token = token?.getBearerToken(),
                     request
                 )
                 if (response.isSuccessful){
-                    response.body()?.let { messages.add(it) }
+                    val newList = ArrayList(messages)
+                    newList.add(response.body())
+                    response.body()?.let { messages = newList }
+
                 }
-
-
             } catch (e: Exception) {
                 println("Error $e")
             }
