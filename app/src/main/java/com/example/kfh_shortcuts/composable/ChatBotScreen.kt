@@ -31,7 +31,7 @@ import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 
 @Composable
 fun ChatBotScreen(viewModel: ProductViewModel) {
-    var text by remember { mutableStateOf("") }
+    var text = remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -60,7 +60,7 @@ fun ChatBotScreen(viewModel: ProductViewModel) {
         ScrollableRow(items = listOf("Cards", "Financial investment", "Prepaid", "Cards"))
         BottomInputField(
             text = text,
-            onTextChange = { text = it },
+            onTextChange = { text.value = it },
             viewModel = viewModel
 
         )
@@ -143,7 +143,7 @@ fun ScrollableRow(items: List<String>) {
 @Composable
 fun BottomInputField(
     viewModel: ProductViewModel,
-    text: String,
+    text: MutableState<String>,
     onTextChange: (String) -> Unit,
 
     ) {
@@ -154,7 +154,7 @@ fun BottomInputField(
         verticalAlignment = Alignment.CenterVertically
     ) {
         TextField(
-            value = text,
+            value = text.value,
             onValueChange = onTextChange,
             modifier = Modifier
                 .weight(1f)
@@ -166,8 +166,11 @@ fun BottomInputField(
         Spacer(modifier = Modifier.width(8.dp))
         Button(
             onClick = {
-                viewModel.messages.add(ChatbotResponse(text, "user"))
-                viewModel.chat(request = ChatbotRequest(text))
+                val newList = ArrayList(viewModel.messages)
+                newList.add(ChatbotResponse(text.value, "user"))
+                viewModel.messages = newList
+                viewModel.chat(request = ChatbotRequest(text.value))
+                text.value = ""
                       },
             modifier = Modifier
                 .size(35.dp),
