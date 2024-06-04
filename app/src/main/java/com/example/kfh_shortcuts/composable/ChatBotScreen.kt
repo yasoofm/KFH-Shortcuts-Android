@@ -72,7 +72,7 @@ fun TopBar(name: String,lastName: String, id: Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(140.dp)
+            .height(200.dp)
             .graphicsLayer {
                 clip = true
                 shape = RoundedCornerShape(bottomStart = 29.dp, bottomEnd = 29.dp)
@@ -81,22 +81,19 @@ fun TopBar(name: String,lastName: String, id: Int) {
                 brush = Brush.linearGradient(
                     colors = listOf(Color(0xFF007A3D), Color(0xFF0D4228), Color(0xFF000000))
                 )
-            ),
+            )
+            .padding(20.dp),
         contentAlignment = Alignment.TopStart
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.Center
-        ) {
-            Spacer(modifier = Modifier.height(8.dp))
+        Column(modifier = Modifier.align(Alignment.TopStart)) {
             Text(
-                text = "Welcome \uD83D\uDC4B",
+                text = "Welcome 👋",
                 color = Color.White,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = name,
+                text = "$name $lastName",
                 color = Color.White,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.SemiBold

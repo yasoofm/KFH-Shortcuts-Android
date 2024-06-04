@@ -36,16 +36,9 @@ fun MyNavHost(
             viewModel.requestHistory()
             viewModel.points()
             MainNavHost(viewModel = viewModel, navControllerOutter = navController)
-
-
-            MainNavHost(
-                viewModel = viewModel,
-                navControllerOutter = navController
-            )
         }
         composable(Routes.chatbotRoute) {
             ChatBotScreen(viewModel = viewModel)
-
         }
     }
 }

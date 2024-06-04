@@ -1,6 +1,7 @@
 package com.example.kfh_shortcuts.composable
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -22,11 +23,14 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
+import com.example.kfh_shortcuts.R
 import com.example.kfh_shortcuts.model.Categorey
 import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 
@@ -57,7 +61,7 @@ fun TopBar(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(220.dp)
+            .height(200.dp)
             .graphicsLayer {
                 clip = true
                 shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
@@ -78,26 +82,25 @@ fun TopBar(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 16.dp),
+                .padding(horizontal = 0.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.Start
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(40.dp))
-            Text(
-                text = "Catalog",
-                fontSize = 28.sp,
-                lineHeight = 32.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                modifier = Modifier.padding(bottom = 8.dp)
+            Image(
+                painter = painterResource(id = R.drawable.logo_kfh_shortcuts),
+                contentDescription = "Logo",
+                Modifier.size(100.dp).padding(top = 20.dp)
             )
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 8.dp),
+                    .padding(bottom = 20.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(categories) { category ->
+                itemsIndexed(categories) { index, category ->
+                    if (index == 0){
+                        Spacer(modifier = Modifier.width(16.dp))
+                    }
                     CategoryChip(
                         text = category.name,
                         selected = category.name == selectedCategoryName,
@@ -203,7 +206,7 @@ fun ProductItem(
                 style = MaterialTheme.typography.bodyMedium.copy(
                     color = Color(0xFF0D4228)
                 ),
-                maxLines = 2,
+                maxLines = 1,
                 overflow = TextOverflow.Ellipsis
             )
         }
