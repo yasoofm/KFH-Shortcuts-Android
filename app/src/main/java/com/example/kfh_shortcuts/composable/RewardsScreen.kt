@@ -86,7 +86,7 @@ fun TopBar(name: String, lastName: String, id: Int, points: Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(240.dp)
+            .height(200.dp)
             .graphicsLayer {
                 clip = true
                 shape = RoundedCornerShape(bottomStart = 29.dp, bottomEnd = 29.dp)
@@ -105,10 +105,10 @@ fun TopBar(name: String, lastName: String, id: Int, points: Int) {
             color = Color.White,
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.align(Alignment.TopCenter)
+            modifier = Modifier.align(Alignment.TopEnd)
         )
 
-        Column(modifier = Modifier.align(Alignment.CenterStart)) {
+        Column(modifier = Modifier.align(Alignment.TopStart)) {
             Text(
                 text = "Welcome 👋",
                 color = Color.White,

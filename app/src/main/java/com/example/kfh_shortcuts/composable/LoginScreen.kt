@@ -144,7 +144,7 @@ fun LoginScreen(viewModel: ProductViewModel, onSignInClicked: () -> Unit) {
 @Composable
 fun Logo() {
     Image(
-        painter = painterResource(id = R.drawable.kfh_logo),
+        painter = painterResource(id = R.drawable.logo_kfh_shortcuts),
         contentDescription = "KFH Logo",
         modifier = Modifier.size(100.dp)
     )
@@ -236,11 +236,8 @@ fun PasswordField(pass: MutableState<String>, showError: Boolean) {
         leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
-            val image = if (passwordVisible)
-                painterResource(id = R.drawable.ic_visible)
-            else painterResource(id = R.drawable.ic_visible)
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                Image(painter = image, contentDescription = null)
+                Image(painter = painterResource(id = R.drawable.ic_visible), contentDescription = null, Modifier.size(30.dp))
             }
         },
         colors = TextFieldDefaults.outlinedTextFieldColors(

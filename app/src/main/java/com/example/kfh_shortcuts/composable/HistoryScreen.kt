@@ -28,7 +28,6 @@ fun HistoryScreen(viewModel: ProductViewModel = viewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF8F8F8))
     ) {
         TopBarH(
             name = viewModel.token!!.firstName,
@@ -36,7 +35,6 @@ fun HistoryScreen(viewModel: ProductViewModel = viewModel()) {
             id = viewModel.token!!.kfH_Id,
             points = viewModel.earnedPoint!!.points
         )
-        Spacer(modifier = Modifier.height(16.dp))
         HistoryList(viewModel.history)
     }
 }
@@ -49,7 +47,7 @@ fun TopBarH(name: String, lastName: String, id: Int, points: Int) {
             .height(200.dp)
             .graphicsLayer {
                 clip = true
-                shape = RoundedCornerShape(bottomStart = 29.dp, bottomEnd = 29.dp)
+                shape = RoundedCornerShape(bottomStart = 20.dp, bottomEnd = 20.dp)
             }
             .background(
                 brush = Brush.linearGradient(
@@ -58,10 +56,17 @@ fun TopBarH(name: String, lastName: String, id: Int, points: Int) {
                     end = Offset.Infinite
                 )
             )
-            .padding(10.dp),
+            .padding(20.dp),
         contentAlignment = Alignment.TopStart
     ) {
-        Column(modifier = Modifier.align(Alignment.CenterStart)) {
+        Text(
+            text = "History",
+            color = Color.White,
+            fontSize = 25.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.align(Alignment.TopEnd)
+        )
+        Column(modifier = Modifier.align(Alignment.TopStart)) {
             Text(
                 text = "Welcome 👋",
                 color = Color.White,
@@ -104,12 +109,10 @@ fun TopBarH(name: String, lastName: String, id: Int, points: Int) {
 @Composable
 fun HistoryList(history: List<RequestHistory>) {
     LazyColumn(
-        modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(vertical = 8.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
         items(history) { item ->
             HistoryItem(productName = item.productName, points = item.points)
-            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
@@ -120,7 +123,7 @@ fun HistoryItem(productName: String, points: Int) {
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
+            .padding(start = 16.dp, end = 16.dp, top = 8.dp),
     ) {
         Row(
             modifier = Modifier
