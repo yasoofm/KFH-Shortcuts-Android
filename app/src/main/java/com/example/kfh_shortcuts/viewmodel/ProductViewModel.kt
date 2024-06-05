@@ -73,7 +73,7 @@ class ProductViewModel : ViewModel() {
                     token = token?.getBearerToken()
                 )
                 categories = retrievedCategories
-                val defaultCategorey = retrievedCategories.find { it.name == "Cards" }
+                val defaultCategorey = retrievedCategories.find { it.name == "Prepaid Cards" }
                 if (defaultCategorey != null) {
                     fetchProductsByCategory(defaultCategorey.name)
                 }

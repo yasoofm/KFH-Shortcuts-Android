@@ -46,9 +46,9 @@ fun BottomNavBar(navController: NavHostController) {
         horizontalArrangement = Arrangement.SpaceEvenly,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        NavItem(Icons.Default.Home, "Catalog", { navController.navigate(Routes.catalogRoute)})
-        NavItem(Icons.Default.List, "History", { navController.navigate(Routes.HistoryRoute)})
-        NavItem(Icons.Default.Star, "Rewards", { navController.navigate(Routes.RewardRoute)})
+        NavItem(Icons.Default.Home, "Catalog") { navController.navigate(Routes.catalogRoute) }
+        NavItem(Icons.Default.List, "History") { navController.navigate(Routes.HistoryRoute) }
+        NavItem(Icons.Default.Star, "Rewards") { navController.navigate(Routes.RewardRoute) }
     }
 }
 
