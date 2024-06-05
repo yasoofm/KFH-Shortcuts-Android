@@ -132,7 +132,7 @@ fun ProductDetails(productDetail: Product) {
         Text(
             text = productDetail.description,
             fontSize = 18.sp,
-            color = Color.Gray,
+            color = Color.DarkGray,
             modifier = Modifier.padding(bottom = 16.dp)
         )
 
@@ -161,7 +161,7 @@ fun TextInfoRow(label: String, value: String) {
         Text(
             text = value,
             fontSize = 16.sp,
-            color = Color.Gray
+            color = Color.DarkGray
         )
     }
 }

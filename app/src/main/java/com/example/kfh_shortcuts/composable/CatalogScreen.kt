@@ -36,7 +36,9 @@ import com.example.kfh_shortcuts.viewmodel.ProductViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun CatalogScreen(viewModel: ProductViewModel = viewModel(), openProductDetails: (String) -> Unit) {
+fun CatalogScreen(
+    viewModel: ProductViewModel = viewModel(),
+    openProductDetails: (String) -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -89,7 +91,9 @@ fun TopBar(
             Image(
                 painter = painterResource(id = R.drawable.logo_kfh_shortcuts),
                 contentDescription = "Logo",
-                Modifier.size(100.dp).padding(top = 20.dp)
+                Modifier
+                    .size(100.dp)
+                    .padding(top = 20.dp)
             )
             LazyRow(
                 modifier = Modifier
@@ -98,7 +102,7 @@ fun TopBar(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 itemsIndexed(categories) { index, category ->
-                    if (index == 0){
+                    if (index == 0) {
                         Spacer(modifier = Modifier.width(16.dp))
                     }
                     CategoryChip(
@@ -217,7 +221,7 @@ fun ProductItem(
                 .size(200.dp)
                 .align(Alignment.TopCenter)
                 .offset(y = (-60).dp)
-                .clip(RoundedCornerShape(8.dp)),
+                .clip(RoundedCornerShape(12.dp)),
             contentScale = ContentScale.Fit
         )
     }
