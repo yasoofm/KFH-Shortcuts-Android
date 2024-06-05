@@ -1,6 +1,7 @@
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -25,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kfh_shortcuts.R
+import com.example.kfh_shortcuts.model.Categorey
 import com.example.kfh_shortcuts.model.ChatbotRequest
 import com.example.kfh_shortcuts.model.response.ChatbotResponse
 import com.example.kfh_shortcuts.viewmodel.ProductViewModel
@@ -57,7 +59,7 @@ fun ChatBotScreen(viewModel: ProductViewModel) {
                 }
             }
         }
-        ScrollableRow(items = listOf("Cards", "Financial investment", "Prepaid", "Cards"))
+        ScrollableRow(items = viewModel.categories, viewModel)
         BottomInputField(
             text = text,
             onTextChange = { text.value = it },
@@ -72,7 +74,7 @@ fun TopBar(name: String,lastName: String, id: Int) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(200.dp)
+            .height(120.dp)
             .graphicsLayer {
                 clip = true
                 shape = RoundedCornerShape(bottomStart = 29.dp, bottomEnd = 29.dp)
@@ -109,7 +111,7 @@ fun TopBar(name: String,lastName: String, id: Int) {
 }
 
 @Composable
-fun ScrollableRow(items: List<String>) {
+fun ScrollableRow(items: List<Categorey>, viewModel: ProductViewModel) {
     LazyRow(
         modifier = Modifier
             .padding(horizontal = 16.dp, vertical = 8.dp),
@@ -118,6 +120,12 @@ fun ScrollableRow(items: List<String>) {
         items(items) { item ->
             Box(
                 modifier = Modifier
+                    .clickable {
+                        val newList = ArrayList(viewModel.messages)
+                        newList.add(ChatbotResponse(item.name, "user"))
+                        viewModel.messages = newList
+                        viewModel.chat(request = ChatbotRequest(item.name))
+                    }
                     .border(
                         width = 1.dp,
                         color = Color(0xFF141414),
@@ -127,7 +135,7 @@ fun ScrollableRow(items: List<String>) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    text = item,
+                    text = item.name,
                     color = Color.Black,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium
