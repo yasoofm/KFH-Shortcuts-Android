@@ -46,8 +46,8 @@ fun CatalogScreen(
     ) {
         TopBar(
             categories = viewModel.categories,
-            selectedCategoryName = viewModel.selectedCategoryName,
-            onCategorySelected = viewModel::fetchProductsByCategory
+            onCategorySelected = viewModel::fetchProductsByCategory,
+            viewModel
         )
 
         ProductSection(viewModel, openProductDetails)
@@ -57,8 +57,8 @@ fun CatalogScreen(
 @Composable
 fun TopBar(
     categories: List<Categorey>,
-    selectedCategoryName: String?,
-    onCategorySelected: (String) -> Unit
+    onCategorySelected: (String) -> Unit,
+    viewModel: ProductViewModel
 ) {
     Box(
         modifier = Modifier
@@ -107,7 +107,7 @@ fun TopBar(
                     }
                     CategoryChip(
                         text = category.name,
-                        selected = category.name == selectedCategoryName,
+                        selected = category.name == viewModel.selectedCategoryName,
                         onClick = { onCategorySelected(category.name) }
                     )
                 }
