@@ -57,7 +57,6 @@ class ProductViewModel : ViewModel() {
                 } else {
                     isLoggedIn = true
                 }
-
             } catch (e: Exception) {
                 println("Error $e")
             }
@@ -76,7 +75,6 @@ class ProductViewModel : ViewModel() {
                 fetchProductsByCategory(defaultCategorey.name)
             } catch (e: Exception) {
                 println("Error $e")
-
             }
         }
     }
@@ -92,7 +90,6 @@ class ProductViewModel : ViewModel() {
                 productItems = retrievedProductItems
             } catch (e: Exception) {
                 println("Error $e")
-
             }
         }
     }
@@ -107,9 +104,9 @@ class ProductViewModel : ViewModel() {
                     )
                     if(response.isSuccessful){
                         points()
+                        requestHistory()
                     }
                 }
-
             } catch (e: Exception) {
                 println("Error $e")
             }
@@ -124,10 +121,8 @@ class ProductViewModel : ViewModel() {
                 )
                 Log.e("REWARDS", retrievedRewards.first().toString())
                 rewards = retrievedRewards
-
             } catch (e: Exception) {
                 println("Error $e")
-
             }
         }
     }
@@ -155,9 +150,9 @@ class ProductViewModel : ViewModel() {
                 val retrievedHistory = apiService.getHistory(
                     token = token?.getBearerToken()
                 )
-                history = retrievedHistory.body()!!
-
-
+                if(retrievedHistory.isSuccessful){
+                    history = retrievedHistory.body()!!
+                }
             } catch (e: Exception) {
                 println("Error $e")
             }
@@ -167,13 +162,10 @@ class ProductViewModel : ViewModel() {
     fun points() {
         viewModelScope.launch {
             try {
-
                 val retrievedPoints = apiService.getPoints(
                     token = token?.getBearerToken()
                 )
                 earnedPoint = retrievedPoints.body()!!
-
-
             } catch (e: Exception) {
                 println("Error $e")
             }
@@ -193,7 +185,6 @@ class ProductViewModel : ViewModel() {
                     val newList = ArrayList(messages)
                     newList.add(response.body())
                     response.body()?.let { messages = newList }
-
                 }
             } catch (e: Exception) {
                 println("Error $e")
