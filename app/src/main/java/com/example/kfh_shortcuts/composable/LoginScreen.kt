@@ -14,6 +14,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -23,6 +24,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -36,12 +38,11 @@ fun LoginScreen(viewModel: ProductViewModel, onSignInClicked: () -> Unit) {
     val password = remember { mutableStateOf("") }
     var showEmailError by remember { mutableStateOf(false) }
     var showPasswordError by remember { mutableStateOf(false) }
-
-        if (viewModel.isLoggedIn) {
-            onSignInClicked()
-        }
-
-
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+    if (viewModel.isLoggedIn) {
+        onSignInClicked()
+    }
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -53,7 +54,7 @@ fun LoginScreen(viewModel: ProductViewModel, onSignInClicked: () -> Unit) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(358.dp)
+                    .height(screenHeight / 2 - 20.dp)
                     .graphicsLayer {
                         clip = true
                         shape = RoundedCornerShape(bottomStart = 29.dp, bottomEnd = 29.dp)
@@ -204,19 +205,19 @@ fun EmailField(user: MutableState<String>, showError: Boolean) {
         onValueChange = { user.value = it },
         label = { Text("Email") },
         modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFF6F6F6))
-            .border(1.dp, Color.White, shape = RoundedCornerShape(8.dp)),
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp),
         singleLine = true,
         leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
+        colors = OutlinedTextFieldDefaults.colors(
             unfocusedBorderColor = Color.Transparent,
-            focusedBorderColor = Color.White,
             cursorColor = Color.Black,
-            focusedLabelColor = if (showError) Color.Red else Color.Black,
-            unfocusedLabelColor = if (showError) Color.Red else Color.Gray,
-            containerColor = Color(0xFFF6F6F6),
-        )
+            focusedLabelColor = if(showError) Color.Red else Color.Black,
+            unfocusedLabelColor = if(showError) Color.Red else Color.Gray,
+            unfocusedContainerColor = Color(0xFFF6F6F6),
+            focusedContainerColor = Color(0xFFF6F6F6)
+            ),
+
     )
 }
 
@@ -229,25 +230,24 @@ fun PasswordField(pass: MutableState<String>, showError: Boolean) {
         onValueChange = { pass.value = it },
         label = { Text("Password") },
         modifier = Modifier
-            .fillMaxWidth()
-            .background(Color(0xFFF6F6F6))
-            .border(1.dp, Color.White, shape = RoundedCornerShape(8.dp)),
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp),
         singleLine = true,
         leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                Image(painter = painterResource(id = R.drawable.ic_visible), contentDescription = null, Modifier.size(30.dp))
+                Image(painter = painterResource(id = R.drawable.ic_visible), contentDescription = null, Modifier.size(20.dp))
             }
         },
-        colors = TextFieldDefaults.outlinedTextFieldColors(
+        colors = OutlinedTextFieldDefaults.colors(
             unfocusedBorderColor = Color.Transparent,
-            focusedBorderColor = Color.White,
             cursorColor = Color.Black,
-            focusedLabelColor = if (showError) Color.Red else Color.Black,
-            unfocusedLabelColor = if (showError) Color.Red else Color.Gray,
-            containerColor = Color(0xFFF6F6F6),
-        )
+            focusedLabelColor = if(showError) Color.Red else Color.Black,
+            unfocusedLabelColor = if(showError) Color.Red else Color.Gray,
+            unfocusedContainerColor = Color(0xFFF6F6F6),
+            focusedContainerColor = Color(0xFFF6F6F6)
+        ),
     )
 }
 

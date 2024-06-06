@@ -37,7 +37,6 @@ class ProductViewModel : ViewModel() {
     var rewards: List<Reward> by mutableStateOf(emptyList())
         private set
     var selectedCategoryName: String? by mutableStateOf(null)
-        private set
     var selectedRewardName: String? by mutableStateOf(null)
         private set
     var isLoggedIn: Boolean by mutableStateOf(false)
@@ -73,10 +72,8 @@ class ProductViewModel : ViewModel() {
                     token = token?.getBearerToken()
                 )
                 categories = retrievedCategories
-                val defaultCategorey = retrievedCategories.find { it.name == "Cards" }
-                if (defaultCategorey != null) {
-                    fetchProductsByCategory(defaultCategorey.name)
-                }
+                val defaultCategorey = retrievedCategories[0]
+                fetchProductsByCategory(defaultCategorey.name)
             } catch (e: Exception) {
                 println("Error $e")
 
@@ -191,6 +188,7 @@ class ProductViewModel : ViewModel() {
                     token = token?.getBearerToken(),
                     request
                 )
+                println(response)
                 if (response.isSuccessful){
                     val newList = ArrayList(messages)
                     newList.add(response.body())
