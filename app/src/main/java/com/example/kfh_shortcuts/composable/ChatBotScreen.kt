@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
@@ -41,15 +42,17 @@ fun ChatBotScreen(viewModel: ProductViewModel) {
         TopBar(
             name = viewModel.token!!.firstName,
             lastName = viewModel.token!!.lastName,
-            id = viewModel.token!!.kfH_Id,        )
-        Spacer(modifier = Modifier.height(16.dp))
+            id = viewModel.token!!.kfH_Id,)
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(viewModel.messages) { message ->
+            itemsIndexed(viewModel.messages) {index, message ->
+                if(index == 0){
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
                 if (message.role == "user") {
                     MessageBubbleUser(message.message)
                 } else {
